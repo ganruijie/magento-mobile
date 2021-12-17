@@ -1,0 +1,56 @@
+.icon {
+  //背景图标
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  //img图标
+  object-fit: contain;
+}
+.i-btn-dialog-close {
+  @translate: translate(-50%, -50%);
+  position: absolute;
+  left: 100%;
+  top: 0;
+  transform: @translate;
+  background: #e0e0e0;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  &::before,
+  &::after {
+    display: block;
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 25.5px;
+    height: 4px;
+    border-radius: 4px;
+    background: @color-gray;
+  }
+  &::before{
+    transform: @translate rotate(45deg);
+  }
+  &::after{
+    transform: @translate rotate(-45deg);
+  }
+}
+.i-arrow {
+  display: inline-block;
+  height: 16px;
+  width: 16px;
+  border-top: 4px solid #c7c7cc;
+  border-right: 4px solid #c7c7cc;
+
+  &.right {
+    transform: translateX(-6px) rotate(45deg);
+  }
+
+  &.left {
+    transform: translateX(6px) rotate(-90deg);
+  }
+
+  &.down {
+    transform: translateY(-2px) rotate(135deg);
+  }
+}

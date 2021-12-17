@@ -1,0 +1,127 @@
+[
+  {
+    "src": "http://192.168.100.130:8702/h5/img/1.jpg",
+    "href": {"path": "/item", "query": {"id": 1}},
+    "info": "安利婴幼儿沐浴露牛奶味无香精无添加剂无防300ml安利婴幼儿沐浴露牛奶味",
+    "isRouter": true,
+    "tagPrice": 99000000,
+    "merchantPrice": 800000,
+    "origPrice": 999000,
+    "salePrice": 999000,
+    "totalSoldNumber": 35
+  },
+  {
+    "src": "http://192.168.100.130:8702/h5/img/2.jpg",
+    "href": {"path": "/item", "query": {"id": 2}},
+    "info": "安利婴幼儿沐浴露牛奶味无香精无添加剂无防300ml安利婴幼儿沐浴露牛奶味",
+    "isRouter": true,
+    "tagPrice": 99000000,
+    "merchantPrice": 800000,
+    "origPrice": 999000,
+    "salePrice": 999000,
+    "totalSoldNumber": 35
+  },
+  {
+    "src": "http://192.168.100.130:8702/h5/img/3.jpg",
+    "href": {"path": "/item", "query": {"id": 3}},
+    "info": "安利婴幼儿沐浴露牛奶味无香精无添加剂无防300ml安利婴幼儿沐浴露牛奶味",
+    "isRouter": true,
+    "tagPrice": 99000000,
+    "merchantPrice": 800000,
+    "origPrice": 999000,
+    "salePrice": 999000,
+    "totalSoldNumber": 35
+  },
+  {
+    "src": "http://192.168.100.130:8702/h5/img/4.jpg",
+    "href": "https://www.baidu.com",
+    "info": "安利婴幼儿沐浴露牛奶味无香精无添加剂无防300ml安利婴幼儿沐浴露牛奶味",
+    "isRouter": false,
+    "tagPrice": 99000000,
+    "merchantPrice": 800000,
+    "origPrice": 999000,
+    "salePrice": 999000,
+    "totalSoldNumber": 35
+  },
+  {
+    "src": "http://192.168.100.130:8702/h5/img/5-.jpg",
+    "href": "https://www.baidu.com",
+    "info": "安利婴幼儿沐浴露牛奶味无香精无添加剂无防300ml安利婴幼儿沐浴露牛奶味",
+    "isRouter": false
+  },
+  {
+    "src": "http://192.168.100.130:8702/h5/img/6.jpg",
+    "href": "https://www.baidu.com",
+    "info": "一些图片描述文字"
+  },
+  {
+    "src": "http://192.168.100.130:8702/h5/img/7.jpg",
+    "href": "https://www.baidu.com",
+    "info": "一些图片描述文字"
+  },
+  {
+    "src": "http://192.168.100.130:8702/h5/img/8.jpg",
+    "href": "https://www.baidu.com",
+    "info": "一些图片描述文字"
+  },
+  {
+    "src": "http://192.168.100.130:8702/h5/img/9.jpg",
+    "href": "https://www.baidu.com",
+    "info": "一些图片描述文字"
+  },
+  {
+    "src": "http://192.168.100.130:8702/h5/img/10.jpg",
+    "href": "https://www.baidu.com",
+    "info": "一些图片描述文字"
+  },
+  {
+    "src": "http://192.168.100.130:8702/h5/img/11.jpg",
+    "href": "https://www.baidu.com",
+    "info": "一些图片描述文字"
+  },
+  {
+    "src": "http://192.168.100.130:8702/h5/img/12.jpg",
+    "href": "https://www.baidu.com",
+    "info": "一些图片描述文字"
+  },
+  {
+    "src": "http://192.168.100.130:8702/h5/img/13.jpg",
+    "href": "https://www.baidu.com",
+    "info": "一些图片描述文字"
+  },
+  {
+    "src": "http://192.168.100.130:8702/h5/img/14.jpg",
+    "href": "https://www.baidu.com",
+    "info": "一些图片描述文字"
+  },
+  {
+    "src": "http://192.168.100.130:8702/h5/img/15.jpg",
+    "href": "https://www.baidu.com",
+    "info": "一些图片描述文字"
+  },
+  {
+    "src": "http://192.168.100.130:8702/h5/img/16.jpg",
+    "href": "https://www.baidu.com",
+    "info": "一些图片描述文字"
+  },
+  {
+    "src": "http://192.168.100.130:8702/h5/img/17.jpg",
+    "href": "https://www.baidu.com",
+    "info": "一些图片描述文字"
+  },
+  {
+    "src": "http://192.168.100.130:8702/h5/img/18.jpg",
+    "href": "https://www.baidu.com",
+    "info": "一些图片描述文字"
+  },
+  {
+    "src": "http://192.168.100.130:8702/h5/img/19.jpg",
+    "href": "https://www.baidu.com",
+    "info": "一些图片描述文字"
+  },
+  {
+    "src": "http://192.168.100.130:8702/h5/img/20.jpg",
+    "href": "https://www.baidu.com",
+    "info": "一些图片描述文字"
+  }
+]

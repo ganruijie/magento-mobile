@@ -1,0 +1,9 @@
+export const SWITCH_QUIT_DIALOG = "switchQuitDialog";
+export const SWITCH_ASSEMBLE_USER_DIALOG = "switchAssembleUserDialog";
+export const SWITCH_ASSEMBLE_RULE_DIALOG = "switchAssembleRuleDialog";
+export const SWITCH_BUY_POPUP = "switchBuyPopup";
+export const SET_GOODS_INFO = "setGoodsInfo";
+export const SET_RECOMMEND_LEFT_LIST = "setRecommendLeftList";
+export const SET_RECOMMEND_RIGHT_LIST = "setRecommendRightList";
+export const COUNT_DOWN_TIME = "countDownTime";
+export const INIT_STATE = "initState";

@@ -1,0 +1,58 @@
+.f-pointer {
+  cursor: pointer;
+}
+
+.f-r {
+  float: right;
+}
+.f-l {
+  float: left;
+}
+.f-clearfix {
+  zoom: 1;
+  overflow: hidden;
+
+  &::after {
+    clear: both;
+    content: ".";
+    display: block;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+  }
+}
+
+.f-active:active {
+  background: @color-active;
+}
+
+.confirm-tips {
+	.van-dialog__header{
+		font-size: 0.4rem;
+		color:#505050;
+		line-height: 20/37.5rem;
+	}
+	.van-dialog__message{
+		line-height: 18/37.5rem;
+    color:#505050;
+    font-size: 14/37.5rem;
+    h3 {
+      font-weight: 600;
+      color: #222222;
+      font-size: 15/37.5rem;
+      line-height: 20/37.5rem;
+    }
+    p {
+      line-height: 18/37.5rem;
+      font-size: 14/37.5rem;
+    }
+  }
+    .van-dialog__footer{
+      padding:10/37.5rem 0rem;
+    }
+    .van-button__text{
+      line-height: 20/37.5rem;
+      font-size: 15/37.5rem;
+    }
+}

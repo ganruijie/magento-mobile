@@ -1,0 +1,101 @@
+* {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+
+html.hairlines {
+  // font-size: 85.3333px;
+  font-size: 37.5px;
+  -webkit-text-size-adjust: none;
+}
+
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, select, th, td {
+  margin: 0px;
+  padding: 0px;
+}
+
+s, i, em, b, strong {
+  font-style: normal;
+  text-decoration: none;
+}
+
+/*去除表单元素的默认效果*/
+button, input, textarea, select {
+  font-size: 100%;
+  font-family: inherit;
+  color: inherit;
+  -webkit-appearance: none;
+  border: none;
+  background-color: transparent;
+}
+
+/*去除IE里select的默认外观*/
+select::-ms-expand {
+  display: none;
+}
+
+select:focus, select:active {
+  background-color: transparent;
+}
+
+input[type=text]::-ms-clear, input[type=tel]::-ms-clear, input[type=number]::-ms-clear {
+  display: none;
+}
+
+/*禁用常用标签在选中的时候出现半透明效果或者黄色边框*/
+body, a, img, label, button, input, textarea, select {
+  outline: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+input::-webkit-input-placeholder {
+  color: #cecece;
+  /* 设置input的提示文字默认为灰色 */
+}
+
+/* li {
+  list-styles: none outside none;
+} */
+ul, ol {
+  list-style: outside none none;
+}
+
+h1, h2, h3, h4, h5, h6, b {
+  font-weight: normal;
+}
+
+a, img {
+  /*-webkit-touch-callout: none;*/
+  text-decoration: none;
+  color: inherit;
+  /* 禁止长按链接与图片弹出菜单 */
+}
+
+img {
+  border: none;
+}
+
+/*禁用长按链接弹出效果*/
+html, body {
+  min-height: 100%;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  touch-action: manipulation;
+  /*-webkit-touch-callout: none;*/
+  /* 禁止长按链接与图片弹出菜单 */
+  -webkit-overflow-scrolling: touch;
+  /* 滚动时更顺畅 */
+  /*-webkit-user-select:none;*/
+  /*禁止选择文字*/
+  overscroll-behavior-y: none;
+}
+
+body.hairlines {
+  .f-pingfang-regular();
+  color: #222;
+  min-width: 320px;
+  max-width: 720px;
+  margin: 0 auto;
+  font-size: 0; /* 消除display:inline-block 的3px-5px的边距 */
+}
