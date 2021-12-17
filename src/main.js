@@ -34,9 +34,8 @@ import {
   Popup,
   IndexBar,
   IndexAnchor,
-  RadioGroup,
-  Radio,
   CountDown,
+  Form
 } from "vant";
 import App from "./App.vue";
 import router from "./router";
@@ -80,9 +79,8 @@ Vue.component(NavBar.name, NavBar);
 Vue.component(Popup.name, Popup);
 Vue.component(IndexBar.name, IndexBar);
 Vue.component(IndexAnchor.name, IndexAnchor);
-Vue.component(RadioGroup.name, RadioGroup);
-Vue.component(Radio.name, Radio);
 Vue.component(CountDown.name, CountDown);
+Vue.component(Form.name, Form);
 
 Vue.use(Tips);
 Vue.use(VueProgressBar, {

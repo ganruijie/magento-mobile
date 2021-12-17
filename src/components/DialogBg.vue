@@ -1,8 +1,3 @@
-<!--
-     author : liuzhuo
-     date : 2019/6/24
-     time : 10:01
- -->
 <template>
   <transition name="dialog-fade" v-bind="$attrs" v-on="$listeners">
     <div class="mod-mask shadow" @click="close" v-show="show">

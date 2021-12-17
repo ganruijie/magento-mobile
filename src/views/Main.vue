@@ -6,14 +6,14 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
 export default {
   name: "Main",
   data() {
     return {};
-  },
+  }
 };
 </script>
 <style lang="less" scoped>
-.main-content {}
+.main-content {
+}
 </style>

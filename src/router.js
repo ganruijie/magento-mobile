@@ -14,7 +14,7 @@ const router = new Router({
       path: "/main",
       name: "Main",
       meta: { finishBarSelf: true, selfConfig: true, title: "Magento" },
-      redirect: '/',
+      redirect: "/",
       component: () =>
         import(/* webpackChunkName: "main" */ "@/views/Main.vue"),
       children: [
