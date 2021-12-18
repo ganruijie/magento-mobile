@@ -20,22 +20,20 @@ import {
   Empty,
   Image,
   Icon,
-  ActionSheet,
+  Picker,
   Tag,
   Loading,
   Toast,
-  Overlay,
+  Collapse,
   Divider,
   Dialog,
   Lazyload,
-  List,
-  Sticky,
+  CollapseItem,
   NavBar,
   Popup,
   IndexBar,
-  IndexAnchor,
   CountDown,
-  Form
+  Form,
 } from "vant";
 import App from "./App.vue";
 import router from "./router";
@@ -66,21 +64,19 @@ Vue.component(Field.name, Field);
 Vue.component(Empty.name, Empty);
 Vue.component(Image.name, Image);
 Vue.component(Icon.name, Icon);
-Vue.component(ActionSheet.name, ActionSheet);
 Vue.component(Tag.name, Tag);
 Vue.component(Loading.name, Loading);
 Vue.component(Toast.name, Toast);
-Vue.component(Overlay.name, Overlay);
+Vue.component(Collapse.name, Collapse);
 Vue.component(Divider.name, Divider);
 Vue.component(Dialog.name, Dialog);
-Vue.component(List.name, List);
-Vue.component(Sticky.name, Sticky);
+Vue.component(CollapseItem.name, CollapseItem);
 Vue.component(NavBar.name, NavBar);
 Vue.component(Popup.name, Popup);
 Vue.component(IndexBar.name, IndexBar);
-Vue.component(IndexAnchor.name, IndexAnchor);
 Vue.component(CountDown.name, CountDown);
 Vue.component(Form.name, Form);
+Vue.component(Picker.name, Picker);
 
 Vue.use(Tips);
 Vue.use(VueProgressBar, {

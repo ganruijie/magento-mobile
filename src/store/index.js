@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex, { Store } from "vuex";
 import createPersistedState from "vuex-persistedstate";
+import cart from "./modules/cart/index.js";
 import order from "./modules/order/index.js";
 import * as types from "@/store/types/mutations";
 
@@ -13,21 +14,8 @@ const store = new Store({
       storage: sessionStorage
     })
   ],
-  state: {
-    authorPhone: null,
-    loginToken: null
-  },
-  mutations: {
-    [types.SET_PHONE](state, value) {
-      state.authorPhone = value;
-    }
-  },
-  actions: {
-    setPhone({ commit }, value) {
-      commit(types.SET_PHONE, value);
-    }
-  },
   modules: {
+    cart,
     order
   }
 });

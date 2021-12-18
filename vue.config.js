@@ -19,11 +19,12 @@ module.exports = {
     sourceMap: true
   },
   productionSourceMap: process.env.NODE_ENV === "development",
+  lintOnSave: false,
   devServer: {
     historyApiFallback: true, // history模式下使用
     overlay: { // 让浏览器 overlay 同时显示警告和错误
-      warnings: true,
-      errors: true,
+      warnings: false,
+      errors: false,
     },
     host: '0.0.0.0',
     port: 8702, // 端口号
@@ -33,7 +34,7 @@ module.exports = {
     // proxy: 'http://localhost:8080'   // 配置跨域处理,只有一个代理
     proxy: { // 配置多个跨域
       '/rest/ext/': {
-        target: process.env.PROXY_API,
+        target: process.env.VUE_APP_API,
         changeOrigin: true,
         // ws: true,//websocket支持
         secure: false,
@@ -44,7 +45,7 @@ module.exports = {
     },
   },
   pwa: {
-    name: "magento-mobile",
+    name: "Checkout - SafePal Pay",
     themeColor: "#01a1ef",
     workboxOptions: {
       // importWorkboxFrom: "local"

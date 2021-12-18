@@ -9,13 +9,13 @@
             <div class="option-item-text">
               <p class="order-number">order number:</p>
               <p class="option-item-title" style="text-decoration:underline">
-                #111
+                #{{ preOrder.outOrderNo }}
               </p>
             </div>
           </div>
           <div class="order-amount">
-            <p class="option-item-title">1111</p>
-            <p class="option-item-text">1111</p>
+            <p class="option-item-title">{{ preOrder.amount }}</p>
+            <p class="option-item-text">{{ preOrder.currency }}</p>
           </div>
         </div>
       </div>
@@ -23,7 +23,11 @@
     <div class="cart-item">
       <h3 class="title">Billing Information</h3>
       <div class="content">
-        <van-form class="input-form" @submit="onSubmit">
+        <van-form 
+        class="input-form"
+        ref="inputForm"
+        @submit="onSubmit"
+        @failed="onFailed">
           <van-field
             v-model="inputInfo.customer_name"
             :border="false"
@@ -35,7 +39,6 @@
           <van-field
             v-model="inputInfo.customer_email"
             :border="false"
-            type="password"
             name="customer_email"
             label=""
             placeholder="Emial"
@@ -53,9 +56,11 @@
       </div>
       <div class="content">
         <div class="select-box">
+          <!-- coin -select -->
           <div
             :class="[
               'select-item',
+              noSelectItem ? 'input-info-no-select' : '',
               selectAmountIsHasChange ? 'switch-color' : ''
             ]"
             @click="coinSelectOpen"
@@ -63,23 +68,19 @@
             <div class="place-holder" v-if="!selectItem">
               <p>Please Select Coin</p>
               <div class="">
-                <van-icon name="arrow-up" v-if="coinSelectArrow" />
-                <van-icon name="arrow-down" v-else />
+                <van-icon name="arrow-up" v-if="coinSelectArrow" :size="`${12/37.5}rem`" />
+                <van-icon name="arrow-down" v-else :size="`${12/37.5}rem`" />
               </div>
             </div>
             <div class="select-coin" v-else>
               <div class="left">
                 <div class="img-box">
-                  <img
-                    :src="`${appApi}${selectItem.logoUrl}`"
-                    alt=""
-                    width="40"
-                    height="40"
+                  <img :src="`${appApi}${selectItem.logoUrl}`" alt=""
                   />
                 </div>
                 <div class="content-box">
-                  <p>{{ selectItem.symbol }}</p>
-                  <p style="color:#7C8DB0;font-size:14px;line-height: 20px">
+                  <p class="symbol">{{ selectItem.symbol }}</p>
+                  <p class="name">
                     {{ selectItem.name }}
                   </p>
                 </div>
@@ -87,38 +88,37 @@
               <div class="right">
                 <p>{{ selectItem.amount }}</p>
                 <div class="arrow">
-                  <van-icon name="arrow-up" v-if="coinSelectArrow" />
-                  <van-icon name="arrow-down" v-else />
+                  <van-icon name="arrow-up" v-if="coinSelectArrow" :size="`${12/37.5}rem`" />
+                  <van-icon name="arrow-down" v-else :size="`${12/37.5}rem`" />
                 </div>
               </div>
             </div>
           </div>
-          <div v-if="selectItem" class="select-item" @click="netWorkSelectOpen">
+          <!-- network - select -->
+          <div v-if="selectItem" :class="['select-item', noSelectNetwork ? 'input-info-no-select' : '']" @click="netWorkSelectOpen">
             <div class="place-holder" v-if="!selectNetwork">
               <p>Please Select Network</p>
               <div class="">
-                <van-icon name="arrow-up" v-if="netWorkSelectArrow" />
-                <van-icon name="arrow-down" v-else />
+                <van-icon name="arrow-up" v-if="netWorkSelectArrow" :size="`${12/37.5}rem`" />
+                <van-icon name="arrow-down" v-else :size="`${12/37.5}rem`" />
               </div>
             </div>
             <div class="select-coin" v-else>
               <div class="left">
                 <div class="img-box">
-                  <van-icon name="checked" />
+                  <van-icon name="checked" :size="`${24/37.5}rem`" color="#3E66FB" />
                 </div>
                 <div class="content-box">
-                  <p style="font-size:16px;color:#000000;">
-                    {{ selectNetwork.network }}
-                  </p>
-                  <p style="font-size:14px;color:#7C8DB0;">
+                  <p class="network">{{ selectNetwork.network }}</p>
+                  <p class="network-name" style="color:#7C8DB0;">
                     {{ selectNetwork.networkName }}
                   </p>
                 </div>
               </div>
               <div class="right">
                 <div class="arrow">
-                  <van-icon name="arrow-up" v-if="netWorkSelectArrow" />
-                  <van-icon name="arrow-down" v-else />
+                  <van-icon name="arrow-up" v-if="netWorkSelectArrow" :size="`${12/37.5}rem`" />
+                  <van-icon name="arrow-down" v-else :size="`${12/37.5}rem`" />
                 </div>
               </div>
             </div>
@@ -126,62 +126,281 @@
         </div>
       </div>
       <div class="submit-btn">
-        <van-button color="#3E66FB">Complete Checkout</van-button>
+        <van-button 
+          color="#3E66FB" 
+          :loading-size="`${20/37.5}rem`"
+          loading-text="submit..."
+          :loading="submitLoading"
+          @click="submitBtn">Complete Checkout</van-button>
       </div>
     </div>
+    <!-- coin 选择的popup -->
     <van-popup
       v-model="coinSelectPopup"
       round
       position="bottom"
       :style="{ height: '60%' }"
-    />
+      class="coin-select-popup">
+      <van-picker
+        ref="coinPopup"
+        :columns="refreshOffer"
+        visible-item-count="6"
+        :show-toolbar="true"
+        @cancel="coinSelectPopup = false"
+        :item-height="`${64/37.5}rem`"
+      >
+      <template #default>
+        <div class="top-title">
+          <span class="cancel" @click="coinSelectPopup = false">Cancel</span>
+          <span class="title">please choose Coin</span>
+          <span class="ok" @click="onConfirmCoinSelect">OK</span>
+        </div>
+        <div class="top-filter">
+          <van-field
+            v-model="selectSearch"
+            clearable
+            :border="false"
+            label=""
+            placeholder="Filter by name or ticker"
+          >
+          <template #left-icon>
+            <van-icon :size="`${16/37.5}rem`" name="search" />
+          </template>
+          </van-field>
+        </div>
+      </template>
+      <template #option="props">
+        <div class="select-item" >
+          <div class="item-left">
+            <div class="images">
+              <img :src="`${appApi}${props.logoUrl}`" alt="">
+            </div>
+            <div class="title">
+              <p clas="symbol">{{ props.symbol }}</p>
+              <p class="name">{{ props.name }}</p>
+            </div>
+          </div>
+          <div class="item-right">
+            <p class="value">{{ props.amount }}</p>
+          </div>
+        </div>
+      </template>
+      </van-picker>
+    </van-popup>
+    <!-- network 选择的popup -->
     <van-popup
       v-model="netWorkSelectPopup"
       round
       position="bottom"
       :style="{ height: '60%' }"
-    />
+      class="net-select-popup"
+    >
+      <van-picker
+        ref="netWorkPopup"
+        :columns="selectItem&&selectItem.tokenOffers"
+        visible-item-count="6"
+        :show-toolbar="true"
+        @cancel="netWorkSelectPopup = false"
+        :item-height="`${64/37.5}rem`"
+      >
+      <template #default>
+        <div class="top-title">
+          <span class="cancel" @click="netWorkSelectPopup = false">Cancel</span>
+          <span class="title">please choose Network </span>
+          <span class="ok" @click="onConfirmNetWorkSelect">OK</span>
+        </div>
+      </template>
+      <template #option="props">
+        <div class="select-item" >
+          <div class="item-left-net">
+            <div class="title">{{ props.network }}</div>
+            <div class="subtitle">{{ props.networkName }}</div>
+          </div>
+          <div class="item-right">
+            <p class="value"></p>
+          </div>
+        </div>
+      </template>
+      </van-picker>
+    </van-popup>
   </div>
 </template>
 <script>
+import { createNamespacedHelpers } from "vuex";
+const { mapActions, mapState } = createNamespacedHelpers("cart");
+import api from '@/modules/api.js';
 export default {
-  name: "Home",
+  name: "Cart",
   data() {
     return {
       appApi: process.env.VUE_APP_API,
-      loaded: false,
+      loading: false,
       inputInfo: {
         customer_name: "",
         customer_email: ""
       },
-      createPreOrder: null,
-      countDown: 0,
       selectAmountIsHasChange: false,
       coinSelectArrow: false,
       netWorkSelectArrow: false,
       selectItem: null,
       selectNetwork: null,
       coinSelectPopup: false,
-      netWorkSelectPopup: false
+      netWorkSelectPopup: false,
+      selectSearch: '',
+      timer: null,
+      countDown: 30,
+      selectAmountIsHasChange: false,
+      submitLoading: false,
+      noSelectItem: false,
+      noSelectNetwork: false,
+      redBorderTimer: null
     };
   },
   created() {
     this.$Progress.start();
+    let { customer_first_name, customer_last_name, customer_email } = this.$route.query;
+    this.inputInfo.customer_name = `${customer_first_name || ''} ${customer_last_name || ''}`.trim();
+    this.inputInfo.customer_email = customer_email;
     this.init();
   },
+  computed: {
+    ...mapState({
+      preOrder: state => state.orderOffer.preOrder
+    }),
+    ...mapState(['refreshOffer']),
+  },
+  watch: {
+    "selectAmountIsHasChange": {
+      handler(newValue) {
+        if (newValue) {
+          setTimeout(() => {
+            this.selectAmountIsHasChange = false;
+          }, 3000);
+        }
+      }
+    }
+  },
   methods: {
+    ...mapActions(['getOrderOffer', 'getRefreshOffer']),
     init() {
+      let param = {};
+      Object.assign(param, this.$route.query);
       this.$tips.showLoading();
-      this.$tips.removeLoading();
-      this.$Progress.finish();
+      this.getOrderOffer(param).then(() => {
+        clearInterval(this.timer);
+        this.countDownFn();
+      }).finally(() => {
+        this.$tips.removeLoading();
+        this.$Progress.finish();
+      });
     },
-    onSubmit() {},
+    submitBtn() {
+      const infoInputForm = this.$refs.inputForm;
+      infoInputForm.submit();
+    },
+    async onSubmit() {
+      if (!this.selectItem) { this.noSelectItem = false; this.changeStatus(1); this.$toast({ position: "top", message: 'Please Select Coin' }); return false; }
+      if (!this.selectNetwork) { this.noSelectNetwork = false; this.changeStatus(2); this.$toast({ position: "top", message: 'Please Select Network' }); return false; }
+      const param = {
+        pre_order_id: this.preOrder.id,
+        customer_name: this.inputInfo.customer_name.trim(),
+        customer_email: this.inputInfo.customer_email,
+        token_id: this.selectNetwork.tokenId,
+        coin_price: this.selectItem.price,
+        amount: this.selectItem.amount, // check接口返回的offer中原样传递
+        offer_time: this.selectItem.offerTime, // check接口返回的offer中原样传递
+        code: this.selectItem.code, // check接口返回的offer中原样传递
+      };
+      this.submitLoading = true;
+      await api.post('/place-order', param).then((res) => {
+        const { transactionNo } = res.data;
+        this.$router.replace({
+          path: '/order-detail',
+          query: {
+            transaction_no: transactionNo,
+          },
+        });
+      }).finally(() => {
+        this.submitLoading = false;
+      });
+    },
+    onFailed() {},
     coinSelectOpen() {
       this.coinSelectPopup = !this.coinSelectPopup;
     },
     netWorkSelectOpen() {
       this.netWorkSelectPopup = !this.netWorkSelectPopup;
-    }
+    },
+    onConfirmNetWorkSelect() {
+      let result = this.$refs.netWorkPopup.getValues();
+      this.selectNetwork = result[0];
+      this.netWorkSelectPopup = false;
+    },
+    onConfirmCoinSelect() {
+      let result = this.$refs.coinPopup.getValues();
+      this.selectItem = result[0];
+      this.coinSelectPopup = false;
+    },
+    countDownFn() {
+      this.timer = setInterval(() => {
+        this.countDown -= 1;
+        if (this.countDown === 0) {
+          clearInterval(this.timer);
+          this.countDown = 30;
+          this.refreshOfferAuto();
+        }
+      }, 1000);
+    },
+    refreshOfferAuto() {
+      const param = {
+        pre_order_id: this.preOrder.id,
+      };
+      this.selectAmountIsHasChange = false;
+      this.getRefreshOffer(param).then((res) => {
+        const { offers } = res.data;
+        // 将选中的selectItem进行覆盖最新的
+        offers.map((item) => {
+          if (item.symbol === this.selectItem.symbol) {
+            this.selectAmountIsHasChange = true;
+            this.selectItem = item;
+          }
+        });
+        this.countDownFn();
+        this.filterSearchFn(this.selectSearch);
+      }).finally(() => {});
+    },
+    filterSearchFn(value) {
+      // const reg = new RegExp(value.toLowerCase());
+      // const arr = [...this.offers];
+      // let result = [];
+      // arr.map((item) => {
+      //   if (reg.test(item.symbol.toLowerCase())) {
+      //     result = [...result, item];
+      //   }
+      // });
+      // createPreOrderOffersCopy.value = result;
+    },
+    changeStatus(type) {
+      clearInterval(this.redBorderTimer);
+      let time = 0;
+      this.redBorderTimer = setInterval(() => {
+        if (time <= 5) {
+          if (type === 1) {
+            this.noSelectItem = !this.noSelectItem;
+          } else {
+            this.noSelectNetwork = !this.noSelectNetwork;
+          }
+          time++;
+        } else {
+          time = 0;
+          clearInterval(this.redBorderTimer);
+        }
+      }, 600);
+    },
+  },
+  beforeDestroy() {
+    clearInterval(this.timer);
+    clearInterval(this.redBorderTimer);
   }
 };
 </script>
@@ -284,7 +503,7 @@ export default {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0px .px2rem(10) [];
+        // padding: 0px .px2rem(10) [];
         .left,
         .right {
           display: flex;
@@ -297,12 +516,32 @@ export default {
           justify-content: flex-start;
           align-items: center;
           margin-right: .px2rem(16) [];
+          img {
+            width: .px2rem(30) [];
+            height: .px2rem(30) [];;
+          }
         }
         .arrow {
-          margin-left: .px2rem(20) [];
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-left: .px2rem(10) [];
         }
         .content-box {
+          .symbol, .network {
+            color:#000000;
+            font-size: .px2rem(14) [];
+            line-height: .px2rem(20) [];
+          }
+          .name, .network-name {
+            color:#7C8DB0;
+            font-size: .px2rem(12) [];
+            line-height: .px2rem(16) [];
+          }
+        }
+        .right {
           p {
+            font-size: .px2rem(14) [];
             line-height: .px2rem(20) [];
           }
         }
@@ -323,6 +562,97 @@ export default {
         line-height: .px2rem(26) [];
       }
     }
+  }
+  ::v-deep .coin-select-popup, ::v-deep .net-select-popup {
+    .van-picker__toolbar {
+      display: block;
+      height: unset;
+      .top-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .mg-b(.px2rem(16) []);
+        .title {
+          display: inline-block;
+          font-size: .px2rem(16) [];
+          line-height: .px2rem(22) [];
+          padding: 0px .px2rem(8) [];
+        }
+        .cancel, .ok { 
+          color: #000000;
+          font-size: .px2rem(16) [];
+          line-height: .px2rem(22) [];
+        }
+      }
+      .top-filter {
+        border: 1px solid #D7DEEA;
+        padding: .px2rem(6) [] .px2rem(16) [];
+        border-radius: .px2rem(4) [];
+      }
+    }
+    .van-picker {
+      padding: .px2rem(15) [];
+    }
+    .van-picker-column__item {
+      box-sizing: border-box;
+      display: block;
+      padding: .px2rem(10) [];
+    }
+    .title {
+      font-size: .px2rem(14) [];
+      color: #000000;
+      line-height: .px2rem(20) [];
+    }
+    .select-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .item-left {
+        display: flex;
+        align-items: center;
+        .images {
+          margin-right: .px2rem(16) [];
+          img {
+            width: .px2rem(30) [];
+            height: .px2rem(30) [];
+            display: block;
+            font-size: 0px;
+          }
+        }
+        .name {
+          color: #7C8DB0;
+          font-size: .px2rem(12) [];
+          line-height: .px2rem(16) [];
+        }
+      }
+      .item-left-net {
+        .subtitle {
+          margin-top: .px2rem(4) [];
+          color: #7C8DB0;
+          font-size: .px2rem(12) [];
+          line-height: .px2rem(16) [];
+        }
+      }
+      .item-right {
+        p {
+          font-size: .px2rem(14) [];
+          line-height: .px2rem(20) [];
+          color: #000000;
+        }
+      }
+    }
+
+  }
+}
+.input-info-no-select {
+  border: 1px solid @color-red !important;
+}
+.switch-color {
+  animation: shake 1s infinite;
+}
+@keyframes shake {
+  50% {
+    background-color: #dcdfe6;
   }
 }
 </style>

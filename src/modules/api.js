@@ -16,11 +16,14 @@ const errorHandler = new Proxy(Object.create(null), {
       }
       msgClosed = false;
       closeFn = Dialog({
-        beforeClose() {
+        beforeClose(action, done) {
           msgClosed = true;
           closeFn = null;
+          done();
         },
         message: msg,
+        confirmButtonText: 'OK',
+        className: 'service-dialog'
       });
     };
     target[code] = handler;
@@ -116,11 +119,13 @@ service.interceptors.response.use(
       case 404:
         Dialog({
           message: messages[status],
+          confirmButtonText: 'OK',
         });
         break;
       default:
         Dialog({
-          message: 'Request service exception'
+          message: 'Request service exception',
+          confirmButtonText: 'OK',
         });
         break;
     } // 错误提醒
@@ -176,5 +181,5 @@ export default {
       data: formdata,
     }).then((response) => response.data);
   },
-  jsonp,
+  jsonp
 };

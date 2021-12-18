@@ -13,7 +13,7 @@ const router = new Router({
     {
       path: "/main",
       name: "Main",
-      meta: { finishBarSelf: true, selfConfig: true, title: "Magento" },
+      meta: { finishBarSelf: true, selfConfig: true, title: "" },
       redirect: "/",
       component: () =>
         import(/* webpackChunkName: "main" */ "@/views/Main.vue"),
@@ -22,9 +22,16 @@ const router = new Router({
           path: "/cart",
           name: "Cart",
           ops: route => ({ ...route.query }),
-          meta: { finishBarSelf: true, selfConfig: true, title: "Magento" },
+          meta: { finishBarSelf: true, selfConfig: true, title: "" },
           component: () =>
             import(/* webpackChunkName: "cart" */ "@/views/Cart/index.vue")
+        },
+        {
+          path: '/order-detail',
+          name: 'OrderDetail',
+          meta: { finishBarSelf: true, selfConfig: true, title: "" },
+          component: () =>
+            import(/* webpackChunkName: "order" */ "@/views/Order/detail.vue")
         }
       ]
     },
@@ -38,7 +45,7 @@ const router = new Router({
 });
 
 router.beforeResolve((to, from, next) => {
-  document.title = to.meta.title ? to.meta.title : "Magento";
+  document.title = to.meta.title ? to.meta.title : "Checkout - SafePal Pay";
   next();
 });
 
