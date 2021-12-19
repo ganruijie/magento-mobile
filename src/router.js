@@ -32,6 +32,12 @@ const router = new Router({
           meta: { finishBarSelf: true, selfConfig: true, title: "" },
           component: () =>
             import(/* webpackChunkName: "order" */ "@/views/Order/detail.vue")
+        },
+        {
+          path: '/order-result',
+          name: 'OrderResult',
+          component: () => import(/* webpackChunkName: "order" */ "@/views/Order/result.vue"),
+          meta: { finishBarSelf: true, selfConfig: true, title: "" },
         }
       ]
     },

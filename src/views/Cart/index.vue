@@ -61,7 +61,7 @@
             :class="[
               'select-item',
               noSelectItem ? 'input-info-no-select' : '',
-              selectAmountIsHasChange ? 'switch-color' : ''
+              selectAmountIsHasChange && selectItem ? 'switch-color' : ''
             ]"
             @click="coinSelectOpen"
           >
@@ -148,6 +148,8 @@
         :show-toolbar="true"
         @cancel="coinSelectPopup = false"
         :item-height="`${64/37.5}rem`"
+        :default-index="defaultIndexCoin"
+        value-key="symbol"
       >
       <template #default>
         <div class="top-title">
@@ -162,6 +164,7 @@
             :border="false"
             label=""
             placeholder="Filter by name or ticker"
+            @input="keySearchName"
           >
           <template #left-icon>
             <van-icon :size="`${16/37.5}rem`" name="search" />
@@ -202,6 +205,7 @@
         :show-toolbar="true"
         @cancel="netWorkSelectPopup = false"
         :item-height="`${64/37.5}rem`"
+        value-key="tokenId"
       >
       <template #default>
         <div class="top-title">
@@ -227,8 +231,10 @@
 </template>
 <script>
 import { createNamespacedHelpers } from "vuex";
-const { mapActions, mapState } = createNamespacedHelpers("cart");
+const { mapActions, mapState, mapMutations } = createNamespacedHelpers("cart");
+import * as cartTypes from "@/store/types/cart/mutations";
 import api from '@/modules/api.js';
+import { Throttle } from '@/modules/utils.js';
 export default {
   name: "Cart",
   data() {
@@ -253,7 +259,9 @@ export default {
       submitLoading: false,
       noSelectItem: false,
       noSelectNetwork: false,
-      redBorderTimer: null
+      redBorderTimer: null,
+      defaultIndexCoin: 0,
+      refreshOfferopy: []
     };
   },
   created() {
@@ -282,11 +290,13 @@ export default {
   },
   methods: {
     ...mapActions(['getOrderOffer', 'getRefreshOffer']),
+    ...mapMutations({setRefreshOffer: cartTypes.GET_REFRESH_OFFER}),
     init() {
       let param = {};
       Object.assign(param, this.$route.query);
       this.$tips.showLoading();
       this.getOrderOffer(param).then(() => {
+        this.refreshOfferopy = [...this.refreshOffer];
         clearInterval(this.timer);
         this.countDownFn();
       }).finally(() => {
@@ -327,6 +337,8 @@ export default {
     onFailed() {},
     coinSelectOpen() {
       this.coinSelectPopup = !this.coinSelectPopup;
+      this.selectSearch = "";
+      this.filterSearchFn(this.selectSearch);
     },
     netWorkSelectOpen() {
       this.netWorkSelectPopup = !this.netWorkSelectPopup;
@@ -338,16 +350,37 @@ export default {
     },
     onConfirmCoinSelect() {
       let result = this.$refs.coinPopup.getValues();
+      if (result.symbol !== (this.selectItem&&this.selectItem.symbol)) {
+        this.selectNetwork = null;
+      }
       this.selectItem = result[0];
       this.coinSelectPopup = false;
     },
     countDownFn() {
+      let offersArr = [];
       this.timer = setInterval(() => {
         this.countDown -= 1;
-        if (this.countDown === 0) {
+        if (this.countDown === 3) {
+          this.refreshOfferAuto().then(res => {
+            this.selectAmountIsHasChange = true;
+            const { offers } = res.data;
+            offersArr = offers;
+          });
+        }else if (this.countDown === 0) {
+          // 将选中的selectItem进行覆盖最新的
+          offersArr.map((item, index) => {
+            if (item.symbol === (this.selectItem&&this.selectItem.symbol)) {
+              this.selectItem = item;
+              this.defaultIndexCoin = index;
+            }
+          });
+          this.refreshOfferopy = [...this.refreshOffer];
+          if (this.coinSelectPopup) {
+            this.filterSearchFn(this.selectSearch);
+          }
           clearInterval(this.timer);
           this.countDown = 30;
-          this.refreshOfferAuto();
+          this.countDownFn();
         }
       }, 1000);
     },
@@ -356,29 +389,24 @@ export default {
         pre_order_id: this.preOrder.id,
       };
       this.selectAmountIsHasChange = false;
-      this.getRefreshOffer(param).then((res) => {
-        const { offers } = res.data;
-        // 将选中的selectItem进行覆盖最新的
-        offers.map((item) => {
-          if (item.symbol === this.selectItem.symbol) {
-            this.selectAmountIsHasChange = true;
-            this.selectItem = item;
-          }
-        });
-        this.countDownFn();
-        this.filterSearchFn(this.selectSearch);
+      return this.getRefreshOffer(param).then((res) => {
+        return res;
       }).finally(() => {});
     },
     filterSearchFn(value) {
-      // const reg = new RegExp(value.toLowerCase());
-      // const arr = [...this.offers];
-      // let result = [];
-      // arr.map((item) => {
-      //   if (reg.test(item.symbol.toLowerCase())) {
-      //     result = [...result, item];
-      //   }
-      // });
-      // createPreOrderOffersCopy.value = result;
+      const reg = new RegExp(value.toLowerCase());
+      // 使用备份数据过滤搜索框中匹配项
+      const arr = [...this.refreshOfferopy];
+      let result = [];
+      arr.map((item) => {
+        if (reg.test(item.symbol.toLowerCase())) {
+          result = [...result, item];
+        }
+      });
+      this.setRefreshOffer(result);
+    },
+    keySearchName(value) {
+      Throttle(this.filterSearchFn(value), 500);
     },
     changeStatus(type) {
       clearInterval(this.redBorderTimer);
@@ -583,11 +611,22 @@ export default {
           font-size: .px2rem(16) [];
           line-height: .px2rem(22) [];
         }
+        .ok {
+          color: #3E66FB;
+        }
       }
       .top-filter {
         border: 1px solid #D7DEEA;
         padding: .px2rem(6) [] .px2rem(16) [];
         border-radius: .px2rem(4) [];
+        .van-cell {
+          font-size: .px2rem(14) [];
+          line-height: .px2rem(20) [];
+          padding: 0px;
+        }
+        .van-field__clear {
+          font-size:.px2rem(14) [];
+        }
       }
     }
     .van-picker {

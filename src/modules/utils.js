@@ -214,3 +214,23 @@ export const goPost = () => {
     }
   })();
 };
+/**
+ * 函数节流
+ * @param fn
+ * @param interval
+ * @returns {Function}
+ * @constructor
+ */
+ export const Throttle = (func, delay) => {
+  let timeOut = null;
+  return () => {
+    clearTimeout(timeOut);
+    const context = this;
+    const args = arguments;
+    if (!timeOut) {
+      timeOut = setTimeout(() => {
+        func.apply(context, args);
+      }, delay);
+    }
+  };
+};

@@ -29,10 +29,10 @@
                             </div>
                         </div>
                         <div class="content-item">
-                            <p class="content-item_title"> Binance Smart Chain ({{ orderDetail.network }})</p>
+                            <p class="content-item_title">{{ orderDetail.networkName }}</p>
                             <div class="item_address">
                                 <div class="address">{{ orderDetail.poolAddress }}</div>
-								<div class="memo">
+								<div v-if="orderDetail.poolAddressTag" class="memo">
 									<p>Memo：{{ orderDetail.poolAddressTag }}</p>
 								</div>
                             </div>
@@ -75,7 +75,7 @@
 								<div style="margin-top:16px;" class="collapse-text">
 									2) After sending payment,review the status of your transaction
 									<router-link class="collapse-text-type1" :to="{
-									path: '/order-detail-result',
+									path: '/order-result',
 									query: {
 										transaction_no: orderDetail.orderNo
 									}
@@ -168,7 +168,7 @@ export default {
 }
 .qr-message {
     background: #FFFFFF;
-    box-shadow: 0px .px2rem(8) [] .px2rem(18) [] -.px2rem(6) [] rgba(24, 39, 75, 0.12);
+    box-shadow: 0px .px2rem(8) [] .px2rem(18) [] .px2rem(-6) [] rgba(24, 39, 75, 0.12);
     border-radius: .px2rem(4) [];
     .qr-code {
         .qrCode-box {
@@ -221,9 +221,9 @@ export default {
       font-size: .px2rem(16) [];
       line-height: .px2rem(22) [];
       word-break: break-all;
-	  margin-bottom: .px2rem(10) [];
     }
 	.memo {
+        margin-top: .px2rem(10) [];
 		color:#E65C00;
 		font-size: .px2rem(13) [];
 		line-height: .px2rem(18) [];
@@ -233,7 +233,7 @@ export default {
 .verification-code {
 	margin-top: .px2rem(20) [];
 	background: #FFFFFF;
-    box-shadow: 0px .px2rem(8) [] .px2rem(18) [] -.px2rem(6) [] rgba(24, 39, 75, 0.12);
+    box-shadow: 0px .px2rem(8) [] .px2rem(18) [] .px2rem(-6) [] rgba(24, 39, 75, 0.12);
     border-radius: .px2rem(4) [];
 	.code-content {
 		padding: .px2rem(16) [];
@@ -249,6 +249,7 @@ export default {
 }
 ::v-deep .collapse {
 	.van-collapse-item__title {
+        background-color: #F5F7FF;
 		color: #596C90;
 		font-size: .px2rem(14) [];
 		line-height: .px2rem(20) [];
