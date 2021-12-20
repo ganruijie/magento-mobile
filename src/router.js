@@ -2,7 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 // import app from "@/main";
 
-import NotFound404 from "./views/NotFound404.vue";
+import Error from "./views/Error.vue";
 
 Vue.use(Router);
 
@@ -14,7 +14,7 @@ const router = new Router({
       path: "/main",
       name: "Main",
       meta: { finishBarSelf: true, selfConfig: true, title: "" },
-      redirect: "/",
+      redirect: "/cart",
       component: () =>
         import(/* webpackChunkName: "main" */ "@/views/Main.vue"),
       children: [
@@ -27,25 +27,26 @@ const router = new Router({
             import(/* webpackChunkName: "cart" */ "@/views/Cart/index.vue")
         },
         {
-          path: '/order-detail',
-          name: 'OrderDetail',
+          path: "/order-detail",
+          name: "OrderDetail",
           meta: { finishBarSelf: true, selfConfig: true, title: "" },
           component: () =>
             import(/* webpackChunkName: "order" */ "@/views/Order/detail.vue")
         },
         {
-          path: '/order-result',
-          name: 'OrderResult',
-          component: () => import(/* webpackChunkName: "order" */ "@/views/Order/result.vue"),
-          meta: { finishBarSelf: true, selfConfig: true, title: "" },
+          path: "/order-result",
+          name: "OrderResult",
+          component: () =>
+            import(/* webpackChunkName: "order" */ "@/views/Order/result.vue"),
+          meta: { finishBarSelf: true, selfConfig: true, title: "" }
         }
       ]
     },
     {
-      path: "/*",
-      name: "404",
-      meta: { title: "找不到了~" },
-      component: NotFound404
+      path: "/error",
+      name: "Error",
+      meta: { title: "" },
+      component: Error
     }
   ]
 });

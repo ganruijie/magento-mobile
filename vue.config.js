@@ -12,37 +12,51 @@ const { isProd } = require("./build/utils");
 const CspHtmlWebpackPlugin = require("csp-html-webpack-plugin");
 const HtmlWebpackExternalsPlugin = require("html-webpack-externals-plugin");
 const CompressionWebpackPlugin = require("compression-webpack-plugin");
+const IS_PROD = ["production", "prod"].includes(process.env.NODE_ENV);
+const IS_DEV_PROD = ["dev"].includes(process.env.NODE_ENV);
+
+const version = "v1";
+const TimeStamp = new Date().getTime();
+
 module.exports = {
-  // publicPath: process.env.NODE_ENV === "development" ? "/h5/" : "/h5/",
-  assetsDir: "static",
+  publicPath: IS_PROD || IS_DEV_PROD ? "/ext/magento/m" : "/",
+  // assetsDir: "static",
   css: {
-    sourceMap: true
+    // extract: IS_PROD,
+    sourceMap: false,
+    // 修改打包后css文件名，输出重构，打包编译后的文件名称  【模块名称.版本号.css】
+    extract: {
+      filename: `css/[name]_${version}.css?t=${TimeStamp}`,
+      chunkFilename: `css/[name]_${version}.css?t=${TimeStamp}`
+    }
   },
   productionSourceMap: process.env.NODE_ENV === "development",
   lintOnSave: false,
   devServer: {
     historyApiFallback: true, // history模式下使用
-    overlay: { // 让浏览器 overlay 同时显示警告和错误
+    overlay: {
+      // 让浏览器 overlay 同时显示警告和错误
       warnings: false,
-      errors: false,
+      errors: false
     },
-    host: '0.0.0.0',
+    host: "0.0.0.0",
     port: 8702, // 端口号
     https: false, // https:{type:Boolean}
     open: false, // 配置自动启动浏览器
     hotOnly: true, // 热更新
     // proxy: 'http://localhost:8080'   // 配置跨域处理,只有一个代理
-    proxy: { // 配置多个跨域
-      '/rest/ext/': {
+    proxy: {
+      // 配置多个跨域
+      "/rest/ext/": {
         target: process.env.VUE_APP_API,
         changeOrigin: true,
         // ws: true,//websocket支持
         secure: false,
         pathRewrite: {
-          '^/': '/',
-        },
-      },
-    },
+          "^/": "/"
+        }
+      }
+    }
   },
   pwa: {
     name: "Checkout - SafePal Pay",
@@ -70,6 +84,9 @@ module.exports = {
       })
     );
     config.plugins = [...config.plugins, ...plugins];
+    // 修改打包后js文件名，输出重构，打包编译后的文件名称  【模块名称.版本号.js】
+    config.output.filename = `js/[name]_${version}.js?t=${TimeStamp}`;
+    config.output.chunkFilename = `js/[name]_${version}.js?t=${TimeStamp}`;
   },
   chainWebpack(config) {
     //配置mini-css-extract-plugin，使其使用的公路径为publicPath: "/",使用webpack的publicPath
@@ -81,7 +98,10 @@ module.exports = {
             .oneOf(type)
             .use("extract-css-loader")
             .loader(require("mini-css-extract-plugin").loader)
-            .tap(options => ({ ...options, publicPath: undefined }));
+            .tap(options => ({
+              ...options,
+              publicPath: IS_PROD || IS_DEV_PROD ? "/ext/magento/" : "/"
+            }));
         });
       });
 
