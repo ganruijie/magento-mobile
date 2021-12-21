@@ -178,7 +178,9 @@
       v-model="coinSelectPopup"
       round
       position="bottom"
-      :style="{ height: '60%' }"
+      :style="{
+        height: refreshOffer && refreshOffer.length >= 5 ? '55%' : '45%'
+      }"
       class="coin-select-popup"
     >
       <van-picker
@@ -197,7 +199,10 @@
             <span class="title">Select a coin</span>
             <span class="ok" @click="onConfirmCoinSelect">Done</span>
           </div>
-          <div class="top-filter">
+          <div
+            v-if="(refreshOffer && refreshOffer.length >= 5) || selectSearch"
+            class="top-filter"
+          >
             <van-field
               v-model="selectSearch"
               clearable
@@ -235,7 +240,9 @@
       v-model="netWorkSelectPopup"
       round
       position="bottom"
-      :style="{ height: '60%' }"
+      :style="{
+        height: selectItem && selectItem.tokenOffers.length >= 5 ? '55%' : '45%'
+      }"
       class="net-select-popup"
     >
       <van-picker
@@ -448,6 +455,7 @@ export default {
     },
     countDownFn() {
       let offersArr = [];
+      this.timer = null;
       this.timer = setInterval(() => {
         this.countDown -= 1;
         if (this.countDown === 3) {
@@ -457,17 +465,23 @@ export default {
             offersArr = offers;
           });
         } else if (this.countDown === 0) {
-          // 将选中的selectItem进行覆盖最新的
-          offersArr.map((item, index) => {
-            if (item.symbol === (this.selectItem && this.selectItem.symbol)) {
-              this.selectItem = item;
-              this.defaultIndexCoin = index;
-              this.$refs.coinPopup.setIndexes(index);
+          try {
+            // 将选中的selectItem进行覆盖最新的
+            offersArr.map((item, index) => {
+              if (item.symbol === (this.selectItem && this.selectItem.symbol)) {
+                this.selectItem = item;
+                this.defaultIndexCoin = index;
+                this.$refs.coinPopup.setIndexes([index]);
+              }
+            });
+            this.refreshOfferopy = [...this.refreshOffer];
+            if (this.coinSelectPopup) {
+              this.filterSearchFn(this.selectSearch);
             }
-          });
-          this.refreshOfferopy = [...this.refreshOffer];
-          if (this.coinSelectPopup) {
-            this.filterSearchFn(this.selectSearch);
+          } catch (error) {
+            this.$alert({
+              message: error
+            });
           }
           clearInterval(this.timer);
           this.countDown = 180;
@@ -530,8 +544,7 @@ export default {
   margin-bottom: @value;
 }
 .cart-content {
-  height: 100vh;
-  padding: .px2rem(30) [] .px2rem(15) [];
+  padding: .px2rem(15) [];
   .cart-item {
     .mg-b(.px2rem(24) []);
     .title {

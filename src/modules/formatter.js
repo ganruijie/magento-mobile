@@ -91,3 +91,37 @@ export function formatHours(time, formatStr = "HH:mm:ss") {
     })
     .replace(/1S/g, parseInt(result[3] / 100));
 }
+
+function formatDate1(date, fmt) {
+  if (!date) {
+    return "";
+  }
+  date = new Date(date);
+  if (/(y+)/.test(fmt)) {
+    fmt = fmt.replace(
+      RegExp.$1,
+      `${date.getFullYear()}`.substr(4 - RegExp.$1.length)
+    );
+  }
+  const time = {
+    "M+": date.getMonth() + 1,
+    "d+": date.getDate(),
+    "h+": date.getHours(),
+    "m+": date.getMinutes(),
+    "s+": date.getSeconds()
+  };
+  for (const key in time) {
+    if (new RegExp(`(${key})`).test(fmt)) {
+      const str = `${time[key]}`;
+      fmt = fmt.replace(RegExp.$1, RegExp.$1.length === 1 ? str : addZero(str));
+    }
+  }
+  return fmt;
+
+  function addZero(str) {
+    return `00${str}`.substr(str.length);
+  }
+}
+export function filterDate(value) {
+  return formatDate1(value, "yyyy-MM-dd hh:mm:ss");
+}

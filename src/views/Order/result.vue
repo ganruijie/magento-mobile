@@ -45,7 +45,9 @@
             class="content-item"
           >
             <div class="name">Paid Time</div>
-            <div class="value">{{ new Date(`${orderResult.paidTime}`) }}</div>
+            <div class="value">
+              {{ dateFormate(`${orderResult.paidTime}`) }}
+            </div>
           </div>
           <div v-if="orderResult.status === 3" class="content-item">
             <div class="name">Amount Remaining</div>
@@ -162,6 +164,7 @@
 */
 import { createNamespacedHelpers } from "vuex";
 const { mapActions, mapState } = createNamespacedHelpers("order");
+import { filterDate } from "@/modules/formatter.js";
 export default {
   name: "OrderResult",
   data() {
@@ -193,6 +196,9 @@ export default {
         this.$tips.removeLoading();
         this.$Progress.finish();
       });
+    },
+    dateFormate(value) {
+      return filterDate(value, "yyyy-MM-dd hh:mm:ss");
     }
   }
 };
