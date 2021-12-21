@@ -42,6 +42,7 @@ import "./registerServiceWorker";
 import { dispatchActiveSelector } from "@/modules/utils";
 import Tips from "@/plugins/tips/index.vue";
 import "./config/remconfig";
+import { browserRedirect } from "@/modules/env.js";
 
 Vue.use(Lazyload, {
   lazyComponent: true
@@ -99,6 +100,7 @@ process.env.NODE_ENV === "development" &&
 Vue.config.productionTip = process.env.NODE_ENV === "production";
 
 dispatchActiveSelector(document.body);
+browserRedirect();
 
 export default new Vue({
   el: "#app",

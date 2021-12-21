@@ -45,7 +45,7 @@
             class="content-item"
           >
             <div class="name">Paid Time</div>
-            <div class="value">{{ orderResult.paidTime }}</div>
+            <div class="value">{{ new Date(`${orderResult.paidTime}`) }}</div>
           </div>
           <div v-if="orderResult.status === 3" class="content-item">
             <div class="name">Amount Remaining</div>

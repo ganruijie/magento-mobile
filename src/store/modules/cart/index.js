@@ -27,8 +27,7 @@ export default {
           const { preOrder, offers, merchantName } = result;
           commit(cartTypes.GET_ORDER_OFFER, { preOrder, offers, merchantName });
           commit(cartTypes.GET_REFRESH_OFFER, offers);
-        }).catch(() => {
-          commit(cartTypes.GET_ORDER_OFFER, { });
+          return res;
         });
     },
     async getRefreshOffer({ commit }, param) {
@@ -36,8 +35,6 @@ export default {
         const { offers } = res.data;
         commit(cartTypes.GET_REFRESH_OFFER, offers);
         return res;
-      }).catch(() => {
-        commit(cartTypes.GET_REFRESH_OFFER, []);
       })
     }
   }

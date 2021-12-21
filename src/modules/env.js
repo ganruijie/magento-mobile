@@ -12,7 +12,10 @@ export function isXL() {
 
 export const osCode = isIos() ? 2 : 1;
 
+
 export function browserRedirect() {
+  const { origin, search, pathname } = window.location;
+  const isMobileUrl = new RegExp('/m/').test(pathname);
   const sUserAgent = navigator.userAgent.toLowerCase();
   const bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
   const bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
@@ -32,11 +35,21 @@ export function browserRedirect() {
     bIsCE ||
     bIsWM
   ) {
-    let search = window.location.search;
-    let host = process.env.VUE_APP_API;
-    window.location.href = `${host}`;
+    if (!isMobileUrl) {
+      let replacePathNameArr = pathname.split('/');
+      let index = replacePathNameArr.findIndex(item => item === 'magento');
+      replacePathNameArr.splice(index + 1,0,'m');
+      let replacePathNameRes = replacePathNameArr.join('/');
+      window.location.href = `${origin}${replacePathNameRes}${search}`;
+    }
   } else {
-    window.location = "PC端网站地址";
+    if (isMobileUrl) {
+      let replacePathNameArr = pathname.split('/');
+      let resultArr = replacePathNameArr.filter(item => item !== 'm');
+      let replacePathName = resultArr.join('/');
+      window.location.href = `${origin}${replacePathName}${search}`;
+    }
+    
   }
 }
 
@@ -44,5 +57,6 @@ export default {
   isIos,
   isAndroid,
   isXL,
-  osCode
+  osCode,
+  browserRedirect
 };

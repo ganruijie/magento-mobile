@@ -35,16 +35,11 @@ export default {
 <style lang="less" scoped>
 .error-box {
   height: 100vh;
-  background-color: #f5f7ff;
+  background-color: #ffffff;
   padding: .px2rem(20) [];
   .content {
     background-color: #ffffff;
     padding: .px2rem(10) [];
-    border: 1px solid #d7deea;
-    box-sizing: border-box;
-    border-radius: .px2rem(4) [];
-    box-shadow: 0px .px2rem(8) [] .px2rem(18) [] .px2rem(-6) []
-      rgba(24, 39, 75, 0.12);
   }
   ::v-deep .custom-image {
     .van-empty__image {

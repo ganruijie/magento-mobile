@@ -194,7 +194,7 @@
         <template #default>
           <div class="top-title">
             <span class="cancel" @click="coinSelectPopup = false">Cancel</span>
-            <span class="title">select a Coin</span>
+            <span class="title">Select a coin</span>
             <span class="ok" @click="onConfirmCoinSelect">Done</span>
           </div>
           <div class="top-filter">
@@ -351,7 +351,7 @@ export default {
           this.$router.replace({
             path: "/error",
             query: {
-              des: err
+              des: err.message
             }
           });
         })
@@ -368,13 +368,13 @@ export default {
       if (!this.selectItem) {
         this.noSelectItem = false;
         this.changeStatus(1);
-        this.$toast({ position: "top", message: "Please Select Coin" });
+        this.$toast({ position: "top", message: "Select a coin" });
         return false;
       }
       if (!this.selectNetwork) {
         this.noSelectNetwork = false;
         this.changeStatus(2);
-        this.$toast({ position: "top", message: "Please Select Network" });
+        this.$toast({ position: "top", message: "Select a network" });
         return false;
       }
       const param = {

@@ -11,36 +11,26 @@ const router = new Router({
   base: process.env.BASE_URL,
   routes: [
     {
-      path: "/main",
-      name: "Main",
+      path: "/",
+      name: "Cart",
+      ops: route => ({ ...route.query }),
       meta: { finishBarSelf: true, selfConfig: true, title: "" },
-      redirect: "/cart",
       component: () =>
-        import(/* webpackChunkName: "main" */ "@/views/Main.vue"),
-      children: [
-        {
-          path: "/cart",
-          name: "Cart",
-          ops: route => ({ ...route.query }),
-          meta: { finishBarSelf: true, selfConfig: true, title: "" },
-          component: () =>
-            import(/* webpackChunkName: "cart" */ "@/views/Cart/index.vue")
-        },
-        {
-          path: "/order-detail",
-          name: "OrderDetail",
-          meta: { finishBarSelf: true, selfConfig: true, title: "" },
-          component: () =>
-            import(/* webpackChunkName: "order" */ "@/views/Order/detail.vue")
-        },
-        {
-          path: "/order-result",
-          name: "OrderResult",
-          component: () =>
-            import(/* webpackChunkName: "order" */ "@/views/Order/result.vue"),
-          meta: { finishBarSelf: true, selfConfig: true, title: "" }
-        }
-      ]
+        import(/* webpackChunkName: "cart" */ "@/views/Cart/index.vue")
+    },
+    {
+      path: "/order-detail",
+      name: "OrderDetail",
+      meta: { finishBarSelf: true, selfConfig: true, title: "" },
+      component: () =>
+        import(/* webpackChunkName: "order" */ "@/views/Order/detail.vue")
+    },
+    {
+      path: "/order-result",
+      name: "OrderResult",
+      component: () =>
+        import(/* webpackChunkName: "order" */ "@/views/Order/result.vue"),
+      meta: { finishBarSelf: true, selfConfig: true, title: "" }
     },
     {
       path: "/error",
