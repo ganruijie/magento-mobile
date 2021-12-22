@@ -1,6 +1,8 @@
 import Vue from "vue";
 import Router from "vue-router";
 // import app from "@/main";
+import { browserRedirect } from "@/modules/env.js";
+import { goPost } from "@/modules/utils.js";
 
 import Error from "./views/Error.vue";
 
@@ -41,8 +43,15 @@ const router = new Router({
   ]
 });
 
+router.beforeEach((to, from, next) => {
+  if (["production", "dev"].includes(process.env.NODE_ENV)) {
+    browserRedirect();
+  }
+  next();
+});
 router.beforeResolve((to, from, next) => {
   document.title = to.meta.title ? to.meta.title : "Checkout - SafePal Pay";
+  goPost();
   next();
 });
 

@@ -4,15 +4,9 @@ import VueProgressBar from "vue-progressbar";
 import {
   Col,
   Row,
-  Cell,
-  CellGroup,
   Swipe,
   SwipeItem,
   Search,
-  Tabbar,
-  TabbarItem,
-  Tab,
-  Tabs,
   Grid,
   GridItem,
   Button,
@@ -25,15 +19,15 @@ import {
   Loading,
   Toast,
   Collapse,
+  CollapseItem,
   Divider,
   Dialog,
-  Lazyload,
-  CollapseItem,
   NavBar,
   Popup,
   IndexBar,
   CountDown,
   Form,
+  Sticky
 } from "vant";
 import App from "./App.vue";
 import router from "./router";
@@ -42,22 +36,12 @@ import "./registerServiceWorker";
 import { dispatchActiveSelector } from "@/modules/utils";
 import Tips from "@/plugins/tips/index.vue";
 import "./config/remconfig";
-import { browserRedirect } from "@/modules/env.js";
 
-Vue.use(Lazyload, {
-  lazyComponent: true
-});
 Vue.component(Col.name, Col);
 Vue.component(Row.name, Row);
 Vue.component(Swipe.name, Swipe);
 Vue.component(SwipeItem.name, SwipeItem);
 Vue.component(Search.name, Search);
-Vue.component(Tabbar.name, Tabbar);
-Vue.component(TabbarItem.name, TabbarItem);
-Vue.component(Tab.name, Tab);
-Vue.component(Tabs.name, Tabs);
-Vue.component(Cell.name, Cell);
-Vue.component(CellGroup.name, CellGroup);
 Vue.component(Grid.name, Grid);
 Vue.component(GridItem.name, GridItem);
 Vue.component(Button.name, Button);
@@ -69,15 +53,16 @@ Vue.component(Tag.name, Tag);
 Vue.component(Loading.name, Loading);
 Vue.component(Toast.name, Toast);
 Vue.component(Collapse.name, Collapse);
+Vue.component(CollapseItem.name, CollapseItem);
 Vue.component(Divider.name, Divider);
 Vue.component(Dialog.name, Dialog);
-Vue.component(CollapseItem.name, CollapseItem);
 Vue.component(NavBar.name, NavBar);
 Vue.component(Popup.name, Popup);
 Vue.component(IndexBar.name, IndexBar);
 Vue.component(CountDown.name, CountDown);
 Vue.component(Form.name, Form);
 Vue.component(Picker.name, Picker);
+Vue.component(Sticky.name, Sticky);
 
 Vue.use(Tips);
 Vue.use(VueProgressBar, {
@@ -100,7 +85,6 @@ process.env.NODE_ENV === "development" &&
 Vue.config.productionTip = process.env.NODE_ENV === "production";
 
 dispatchActiveSelector(document.body);
-browserRedirect();
 
 export default new Vue({
   el: "#app",

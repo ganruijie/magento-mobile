@@ -43,8 +43,12 @@ export default {
   }
   ::v-deep .custom-image {
     .van-empty__image {
-      height: .px2rem(200) [];
+      height: auto;
       width: auto;
+      img {
+        height: .px2rem(240) [];
+        width: auto;
+      }
     }
     .van-empty__description {
       font-size: .px2rem(16) [];
