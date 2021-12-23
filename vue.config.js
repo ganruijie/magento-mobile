@@ -209,7 +209,7 @@ module.exports = {
       {
         rel: "preload",
         include: "allAssets",
-        fileWhitelist: [/\.woff2$/],
+        fileWhitelist: [/\.(woff2?|eot|ttf|otf)(\?.*)?$/],
         as: "font"
       }
     ]);

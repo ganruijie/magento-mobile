@@ -39,8 +39,15 @@ const router = new Router({
       name: "Error",
       meta: { title: "" },
       component: Error
+    },
+    {
+      path: "**",
+      redirect: "/error"
     }
-  ]
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    return { x: 0, y: 0 };
+  }
 });
 
 router.beforeEach((to, from, next) => {
@@ -51,7 +58,7 @@ router.beforeEach((to, from, next) => {
 });
 router.beforeResolve((to, from, next) => {
   document.title = to.meta.title ? to.meta.title : "Checkout - SafePal Pay";
-  goPost();
+  // goPost();
   next();
 });
 

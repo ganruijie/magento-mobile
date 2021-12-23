@@ -1,8 +1,3 @@
-/**
- *  author : liuzhuo
- *  date : 2019/1/24
- *  time : 14:42
- */
 const HTMLMinifierOptions = {
   minimize: true,
   minifyJS: true,
@@ -16,7 +11,7 @@ const HTMLMinifierOptions = {
 
 const externalStyle = [
   {
-    module: "Noto Sans SC Regular",
+    module: "Alibaba Sans",
     entry: {
       path: "https://fonts.googleapis.com/css?family=Noto+Sans+SC&display=swap",
       type: "css"

@@ -53,16 +53,24 @@
       <div class="verification-code">
         <div>
           <div class="common-title">
-            <h4>[Important]</h4>
+            <h4 style="color:#f23030;font-weight:600;">[Important]</h4>
           </div>
           <van-divider :hairline="false" />
           <div class="code-content">
-            <p>To make sure the payment goes through successfully, please:</p>
+            <p style="color:#f23030;">
+              To make sure the payment goes through successfully, please:
+            </p>
             <ul class="ul-box">
-              <li>Use a regular transfer instead of any smart contract or third-party DApps</li>
-              <li>Send the payment through the correct network or it could lead to payment failure and permanent asset loss</li>
+              <li>
+                Use a regular transfer instead of any smart contract or
+                third-party DApps
+              </li>
+              <li>
+                Send the payment through the correct network or it could lead to
+                payment failure and permanent asset loss
+              </li>
             </ul>
-            <div class="order-code" style="margin-top: 16px">
+            <div class="order-code" style="margin-top: 0.426667rem">
               <div>
                 <span class="code-title">Payment ID：</span>
                 <span class="collapse-text-type1">{{
@@ -74,7 +82,8 @@
                 <span class="collapse-text-type1">{{
                   orderDetail.verificationCode
                 }}</span
-                >(Save this verification code in case there are any issues with your payment)
+                >(Save this verification code in case there are any issues with
+                your payment)
               </div>
             </div>
           </div>
@@ -84,21 +93,43 @@
             <van-collapse-item title="What to do next?" name="1">
               <div class="collapse-text">
                 <p>
-                  1) Please complete the payment before the payment expiration. You will need to initiate the payment using your cryptocurrency wallet. Please scan the QRcode or copy/paste the address and payment amount to avoid any mistakes. A notification email will be sent to your email when all funds have been received by SafePal Pay. 
-                If the transaction cannot be confirmed or is less than the order amount before the payment expiration, you will receive an automatic email of payment failure. In such a case, please contact us <a target="_blank" href="https://safepalsupport.zendesk.com/hc/en-us/requests/new">https://safepalsupport.zendesk.com/hc/en-us/requests/new</a> with the information below for a full refund:
+                  1) Please complete the payment before the payment expiration.
+                  You will need to initiate the payment using your
+                  cryptocurrency wallet. Please scan the QRcode or copy/paste
+                  the address and payment amount to avoid any mistakes. A
+                  notification email will be sent to your email when all funds
+                  have been received by SafePal Pay. If the transaction cannot
+                  be confirmed or is less than the order amount before the
+                  payment expiration, you will receive an automatic email of
+                  payment failure. In such a case, please
+                  <a
+                    target="_blank"
+                    href="https://safepalsupport.zendesk.com/hc/en-us/requests/new"
+                    >contact us
+                    https://safepalsupport.zendesk.com/hc/en-us/requests/new</a
+                  >
+                  with the information below for a full refund:
                 </p>
                 <p>
-                  i) Transaction ID: <span>{{orderDetail.orderNo}}</span>
+                  i) Transaction ID: <span>{{ orderDetail.orderNo }}</span>
                 </p>
                 <p>
-                  ii) Your refund address (Only a decentralized wallet address is accepted. Please do not use an exchange address for the refund) 
+                  ii) Your refund address (Only a decentralized wallet address
+                  is accepted. Please do not use an exchange address for the
+                  refund)
                 </p>
                 <p>
-                  iii) The payment verification code : <span>{{ orderDetail.verificationCode }}</span> (to verify that you are the transaction sender)
+                  iii) The payment verification code :
+                  <span>{{ orderDetail.verificationCode }}</span> (to verify
+                  that you are the transaction sender)
                 </p>
               </div>
               <div style="margin-top:16px;" class="collapse-text">
-                2) After you sign the payment, please wait patienly until the transaction is fully confirmed. This process usually takes 10-45 minutes, pending on the actual blockchain traffic. Once the payment is confirmed, a notification e-mail will be sent to your mailbox, including the payment details.
+                2) After you sign the payment, please wait patienly until the
+                transaction is fully confirmed. This process usually takes 10-45
+                minutes, pending on the actual blockchain traffic. Once the
+                payment is confirmed, a notification e-mail will be sent to your
+                mailbox, including the payment details.
               </div>
             </van-collapse-item>
             <van-collapse-item
@@ -106,7 +137,9 @@
               name="2"
             >
               <div class="collapse-text">
-                If you didn’t send sufficient amount for the order, please go ahead and send the remainder to the same payment address before the payment expiration.
+                If you didn’t send sufficient amount for the order, please go
+                ahead and send the remainder to the same payment address before
+                the payment expiration.
               </div>
             </van-collapse-item>
           </van-collapse>
@@ -268,19 +301,20 @@ export default {
     color: #596c90;
     font-size: .px2rem(14) [];
     .ul-box {
+      color: #f23030;
       li {
         position: relative;
         line-height: .px2rem(20) [];
         padding-left: .px2rem(16) [];
         &::after {
           position: absolute;
-          content: '';
-          left:0;
+          content: "";
+          left: 0;
           top: .px2rem(6) [];
           width: .px2rem(8) [];
           height: .px2rem(8) [];
           border-radius: 50%;
-          background-color: #596c90;
+          background-color: #f23030;
         }
       }
     }
@@ -295,8 +329,7 @@ export default {
       .code-title {
         display: inline-block;
         line-height: .px2rem(20) [];
-        // font-weight: 600;
-        
+        font-weight: 600;
       }
     }
   }
@@ -308,9 +341,10 @@ export default {
   .van-collapse-item__title {
     background-color: #f5f7ff;
     color: #596c90;
-    font-size: .px2rem(14) [];
-    line-height: .px2rem(20) [];
+    font-size: .px2rem(18) [];
+    line-height: .px2rem(22) [];
     padding: .px2rem(14) [] .px2rem(20) [];
+    font-weight: 600;
   }
   .van-collapse-item__content {
     padding: .px2rem(16) [];

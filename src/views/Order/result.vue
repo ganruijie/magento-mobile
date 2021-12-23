@@ -1,9 +1,40 @@
 <template>
   <div class="order-result">
     <div class="result-card">
+      <div class="qr-code-box" v-if="orderResult.status === 3 && false">
+        <div class="card-item-title bill-title">
+          <h3 class="title-text">QR code for payment</h3>
+        </div>
+        <div class="common-content">
+          <div class="qr-code">
+            <div ref="qrCodeBox" class="qrCode-box">
+              <div class="qrcode-box-qr">
+                <canvas
+                  width="180"
+                  height="180"
+                  style="width: 180px; height: 180px;"
+                />
+              </div>
+            </div>
+            <div class="info"></div>
+          </div>
+        </div>
+      </div>
       <div class="bill">
         <div class="card-item-title bill-title">
-          <h3 class="title-text">Your bill</h3>
+          <h3 v-if="[6, 7].includes(orderResult.status)" class="title-text">
+            Your payment process expired
+          </h3>
+          <h3 v-else-if="orderResult.status === 2" class="title-text">
+            Please complete the payment
+          </h3>
+          <h3 v-else-if="orderResult.status === 3" class="title-text">
+            Please pay the remaining amount
+          </h3>
+          <h3 v-else-if="orderResult.status === 4" class="title-text">
+            The payment is completed
+          </h3>
+          <h3 v-else class="title-text">Your bill</h3>
         </div>
         <div class="common-content bill-content">
           <div class="content-item">
@@ -44,13 +75,13 @@
             "
             class="content-item"
           >
-            <div class="name">Paid Time</div>
+            <div class="name">Payment Time</div>
             <div class="value">
               {{ dateFormate(`${orderResult.paidTime}`) }}
             </div>
           </div>
           <div v-if="orderResult.status === 3" class="content-item">
-            <div class="name">Amount Remaining</div>
+            <div class="name">Remaining Amount</div>
             <div class="value">
               {{ orderResult.remainingAmount }} {{ orderResult.symbol }}
             </div>
@@ -77,8 +108,14 @@
             "
             class="content-item"
           >
-            <div class="name">Memo</div>
-            <div class="value">{{ orderResult.poolAddressTag }}</div>
+            <div style="color:#f23030;" class="name">Memo</div>
+            <div style="color:#f23030;" class="value">
+              <p>{{ orderResult.poolAddressTag }}</p>
+              <p>
+                (Tips:Make sure you enter both the address and Memo correctly
+                before the transfer.)
+              </p>
+            </div>
           </div>
           <div class="item-status">
             <div
@@ -110,7 +147,7 @@
                   name="close"
                   size="0.64rem"
                   color="#27273F"
-                  v-else-if="orderResult.status === 6"
+                  v-else-if="[6, 7].includes(orderResult.status)"
                 />
                 <van-icon name="info-o" size="0.64rem" v-else />
               </div>
@@ -124,7 +161,7 @@
       <div class="verification">
         <div class="top">
           <div class="card-item-title verification-title">
-            <h3 class="title-text">Verification code</h3>
+            <h3 class="title-text">Payment details</h3>
           </div>
           <div class="common-content verification-content">
             <div class="content-item">
@@ -138,18 +175,106 @@
           </div>
         </div>
         <div class="bottom">
-          <div class="common-content">
-            <p style="display: inner-block;margin-bottom:0.26667rem;">
-              Please keep your account and verification code
-            </p>
-            <p>
-              lf you don't receive the email, contact us with the information
-              below and we will send you a refund: i) The transaction ID:
-              {{ orderResult.orderNo }} ii) A payment address to send the funds
-              to. iii) This verification code:
-              {{ orderResult.verificationCode }} (to verify that you are the
-              transaction sender.)
-            </p>
+          <!-- [6, 7].includes(orderResult.status) && orderResult.paidAmount --- 部分付款-超时 -->
+          <div v-if="[6, 7].includes(orderResult.status)">
+            <div
+              class="common-content"
+              v-if="orderResult.paidAmount && orderResult.paidAmount !== '0'"
+            >
+              <p style="display: inner-block;margin-bottom:0.26667rem;">
+                Please
+                <a
+                  target="_blank"
+                  href="https://safepalsupport.zendesk.com/hc/en-us/requests/new"
+                  >contact us
+                  https://safepalsupport.zendesk.com/hc/en-us/requests/new</a
+                >
+                with the information below for a refund of the amount paid:
+              </p>
+              <p>
+                i) Payment ID: <span>{{ orderResult.orderNo }}</span>
+              </p>
+              <p>
+                ii) Your refund address (Only a decentralized wallet address is
+                accepted. Please do not use an exchange address for the refund)
+              </p>
+              <p>
+                iii) The payment verification code :<span>{{
+                  orderResult.verificationCode
+                }}</span>
+                (to verify that you are the transaction sender)
+              </p>
+            </div>
+          </div>
+          <div v-else>
+            <div v-if="orderResult.status === 2" class="common-content">
+              <p style="display: inner-block;margin-bottom:0.26667rem;">
+                If the transaction cannot be confirmed or is less than the order
+                amount before the payment expiration, you will receive an
+                automatic email of payment failure. In such a case, please
+                <a
+                  target="_blank"
+                  href="https://safepalsupport.zendesk.com/hc/en-us/requests/new"
+                  >contact us
+                  https://safepalsupport.zendesk.com/hc/en-us/requests/new</a
+                >
+                with the information below for a full refund:
+              </p>
+              <p>i) Payment ID: {{ orderResult.orderNo }}</p>
+              <p>
+                ii) Your refund address (Only a decentralized wallet address is
+                accepted. Please do not use an exchange address for the refund)
+              </p>
+              <p>
+                iii) The payment verification code :
+                {{ orderResult.verificationCode }} (to verify that you are the
+                transaction sender)
+              </p>
+            </div>
+            <div class="common-content" v-else-if="orderResult.status === 3">
+              <p style="display: inner-block;margin-bottom:0.26667rem;">
+                If the transaction cannot be confirmed or is less than the order
+                amount before the payment expiration, you will receive an
+                automatic email of payment failure. In such a case, please
+                <a
+                  target="_blank"
+                  href="https://safepalsupport.zendesk.com/hc/en-us/requests/new"
+                  >contact us
+                  https://safepalsupport.zendesk.com/hc/en-us/requests/new</a
+                >
+                with the information below for a full refund:
+              </p>
+              <p>i) Payment ID: {{ orderResult.orderNo }}</p>
+              <p>
+                ii) our refund address (Only a decentralized wallet address is
+                accepted. Please do not use an exchange address for the refund)
+              </p>
+              <p>
+                iii) The payment verification code :
+                {{ orderResult.verificationCode }} (to verify that you are the
+                transaction sender)
+              </p>
+            </div>
+            <div class="common-content" v-else-if="orderResult.status === 4">
+              <p style="display: inner-block;margin-bottom:0.26667rem;">
+                Once the payment is confirmed, a notification e-mail will be
+                sent to your mailbox, including the payment details. Please
+                check your spam box if you don’t see the email in the inbox.
+              </p>
+            </div>
+            <div class="common-content" v-else>
+              <p style="display: inner-block;margin-bottom:0.26667rem;">
+                Please keep your account and verification code
+              </p>
+              <p>
+                lf you don't receive the email, contact us with the information
+                below and we will send you a refund: i) The transaction ID:
+                {{ orderResult.orderNo }} ii) A payment address to send the
+                funds to. iii) This verification code:
+                {{ orderResult.verificationCode }} (to verify that you are the
+                transaction sender.)
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -169,6 +294,7 @@
 import { createNamespacedHelpers } from "vuex";
 const { mapActions, mapState } = createNamespacedHelpers("order");
 import { filterDate } from "@/modules/formatter.js";
+const AraleQRCode = require("@/modules/qrcode/index.js");
 export default {
   name: "OrderResult",
   data() {
@@ -176,10 +302,11 @@ export default {
       payStatus: {
         1: "Waiting to bind the payment address",
         2: "Waiting for your funds",
-        3: "Waiting for remaining funds",
+        3: "Waiting for the remaining payment",
         4: "Completed",
-        5: "Time out",
-        6: "Canceled"
+        5: "Refund",
+        6: "Time out",
+        7: "Canceled"
       }
     };
   },
@@ -196,10 +323,20 @@ export default {
       let param = {};
       Object.assign(param, this.$route.query);
       this.$tips.showLoading();
-      this.getOrderResult(param).finally(() => {
-        this.$tips.removeLoading();
-        this.$Progress.finish();
-      });
+      this.getOrderResult(param)
+        .then(res => {
+          const { qrCodeUrl } = res;
+          this.$nextTick(() => {
+            const qr = new AraleQRCode({ text: qrCodeUrl, size: 180 });
+            const tar = this.$refs.qrCodeBox.querySelector(".qrcode-box-qr");
+            tar.innerHTML = "";
+            tar.appendChild(qr);
+          });
+        })
+        .finally(() => {
+          this.$tips.removeLoading();
+          this.$Progress.finish();
+        });
     },
     dateFormate(value) {
       return filterDate(value, "yyyy-MM-dd hh:mm:ss");
@@ -208,40 +345,53 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.cart-style {
+  background-color: #ffffff;
+  padding: .px2rem(10) [];
+  border: 1px solid #d7deea;
+  box-sizing: border-box;
+  border-radius: .px2rem(4) [];
+  box-shadow: 0px .px2rem(8) [] .px2rem(18) [] .px2rem(-6) []
+    rgba(24, 39, 75, 0.12);
+  margin-bottom: .px2rem(10) [];
+}
 .order-result {
   width: 100vw;
+  min-height: 100vh;
   background-color: #f5f7ff;
 }
 .result-card {
   padding: .px2rem(20) [] .px2rem(15) [];
+  .qr-code-box {
+    .cart-style();
+    .qr-code {
+      .qrCode-box {
+        display: flex;
+        justify-content: center;
+        padding: .px2rem(30) [] 0px;
+      }
+    }
+  }
   .bill {
-    background-color: #ffffff;
-    padding: .px2rem(10) [];
-    border: 1px solid #d7deea;
-    box-sizing: border-box;
-    border-radius: .px2rem(4) [];
-    box-shadow: 0px .px2rem(8) [] .px2rem(18) [] .px2rem(-6) []
-      rgba(24, 39, 75, 0.12);
-    margin-bottom: .px2rem(10) [];
+    .cart-style();
   }
   .card-item-title {
     position: relative;
     margin-bottom: .px2rem(8) [];
     .title-text {
       color: #3e66fb;
-      line-height: .px2rem(34) [];
-      font-size: .px2rem(24) [];
-      font-weight: 600;
-      padding-left: .px2rem(30) [];
+      line-height: .px2rem(30) [];
+      font-size: .px2rem(20) [];
+      // font-weight: 600;
+      padding-left: .px2rem(20) [];
       &::after {
         position: absolute;
         content: "";
         width: .px2rem(4) [];
-        height: .px2rem(24) [];
+        height: .px2rem(20) [];
         background-color: #3e66fb;
-        top: 50%;
+        top: .px2rem(5) [];
         left: 0;
-        margin-top: .px2rem(-12) [];
       }
     }
   }
@@ -252,8 +402,7 @@ export default {
     box-shadow: 0px .px2rem(8) [] .px2rem(18) [] .px2rem(-6) []
       rgba(24, 39, 75, 0.12);
     background-color: #ffffff;
-    .top,
-    .bottom {
+    .top {
       padding: .px2rem(20) [];
     }
     .top {
@@ -276,6 +425,8 @@ export default {
     }
   }
   .common-content {
+    word-break: break-all;
+    padding: .px2rem(20) [];
     .content-item {
       display: flex;
       justify-content: space-between;
@@ -286,6 +437,7 @@ export default {
       .name {
         color: #7c8db0;
         padding-right: .px2rem(10) [];
+        min-width: 1.8rem;
       }
       .value {
         color: #27273f;
@@ -293,6 +445,13 @@ export default {
         word-break: break-word;
       }
     }
+    a {
+      text-decoration: underline;
+      color: #3e66fb;
+    }
+  }
+  .verification-content {
+    padding: 0;
   }
   .item-status {
     display: flex;
