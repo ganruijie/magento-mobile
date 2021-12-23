@@ -20,7 +20,7 @@ export default {
   },
   created() {
     let { des } = this.$route.query;
-    this.text = des || "Error";
+    this.text = des || "Not found";
   },
   beforeRouteUpdate(to, from, next) {
     this.$Progress.start();

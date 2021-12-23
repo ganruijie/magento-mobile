@@ -3,7 +3,7 @@
     <div class="header-content">
       <div class="header-content-left">
         <div class="logo">
-          <img class="logo-img" src="@/assets/logo.png" alt="" />
+          <img class="logo-img" src="@/assets/logo.svg" alt="" />
         </div>
       </div>
       <!-- <div class="header-content-right">

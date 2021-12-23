@@ -39,7 +39,7 @@
               </div>
             </div>
             <div class="content-item screen-xs24">
-              <p class="content-item_title">Time Left</p>
+              <p class="content-item_title">Payment Process Expiration</p>
               <div class="item_time">
                 <app-count-down
                   :count-time="paidTime"
@@ -53,28 +53,38 @@
       <div class="verification-code">
         <div>
           <div class="common-title">
-            <h4>Verification code</h4>
+            <h4 style="color:#f23030;font-weight:600;">[Important]</h4>
           </div>
           <van-divider :hairline="false" />
           <div class="code-content">
-            <p>Make sure to use a regular send and not from a contract!</p>
-            <p>
-              Make sure to send enough to cover any coin transaction fees! Only
-              send this coin over the {{ orderDetail.networkName }} and
+            <p style="color:#f23030;">
+              To make sure the payment goes through successfully, please:
             </p>
-            <p>make sure to use regular sends not via any kind of contract!</p>
-            <div style="margin-top: 16px">
-              <p>
-                Payment ID：<span class="collapse-text-type1">{{
+            <ul class="ul-box">
+              <li>
+                Use a regular transfer instead of any smart contract or
+                third-party DApps
+              </li>
+              <li>
+                Send the payment through the correct network or it could lead to
+                payment failure and permanent asset loss
+              </li>
+            </ul>
+            <div class="order-code" style="margin-top: 0.426667rem">
+              <div>
+                <span class="code-title">Payment ID：</span>
+                <span class="collapse-text-type1">{{
                   orderDetail.orderNo
                 }}</span>
-              </p>
-              <p>
-                Verification Code：<span class="collapse-text-type1">{{
+              </div>
+              <div>
+                <span class="code-title">Verification Code：</span>
+                <span class="collapse-text-type1">{{
                   orderDetail.verificationCode
                 }}</span
-                >(save in case there are any issues with your payment)
-              </p>
+                >(Save this verification code in case there are any issues with
+                your payment)
+              </div>
             </div>
           </div>
         </div>
@@ -82,59 +92,54 @@
           <van-collapse v-model="activeNames">
             <van-collapse-item title="What to do next?" name="1">
               <div class="collapse-text">
-                1) Please send
-                <span class="collapse-text-type1"
-                  >{{ orderDetail.amount }} {{ orderDetail.symbol }}</span
-                >
-                to address
-                <span class="collapse-text-type2">{{
-                  orderDetail.address
-                }}</span
-                >.(Make sure to send enough to cover any coin transaction fees!)
-                You will need to initiate the payment using your software or
-                online wallet and copy/paste the address and payment amount into
-                it. We will email you when all funds have been received.You have
-                3 hours,59 minutes, 54 seconds for us to receive confirmed
-                funds.lf you send funds that don't confirm by the timeout or
-                don't send enough coins you will receive an automatic email to
-                claim your funds within 8 hours. lf you don't receive the email
-                contact us with the information below and we will send you a
-                refund: i) The transaction ID:<span>{{
-                  orderDetail.orderNo
-                }}</span>
-                ii) A payment address to send the funds to. iii) This
-                verification code:
-                <span>{{ orderDetail.verificationCode }}</span>
-                (to verify that you are the transaction sender.)
+                <p>
+                  1) Please complete the payment before the payment expiration.
+                  You will need to initiate the payment using your
+                  cryptocurrency wallet. Please scan the QRcode or copy/paste
+                  the address and payment amount to avoid any mistakes. A
+                  notification email will be sent to your email when all funds
+                  have been received by SafePal Pay. If the transaction cannot
+                  be confirmed or is less than the order amount before the
+                  payment expiration, you will receive an automatic email of
+                  payment failure. In such a case, please
+                  <a
+                    target="_blank"
+                    href="https://safepalsupport.zendesk.com/hc/en-us/requests/new"
+                    >contact us
+                    https://safepalsupport.zendesk.com/hc/en-us/requests/new</a
+                  >
+                  with the information below for a full refund:
+                </p>
+                <p>
+                  i) Transaction ID: <span>{{ orderDetail.orderNo }}</span>
+                </p>
+                <p>
+                  ii) Your refund address (Only a decentralized wallet address
+                  is accepted. Please do not use an exchange address for the
+                  refund)
+                </p>
+                <p>
+                  iii) The payment verification code :
+                  <span>{{ orderDetail.verificationCode }}</span> (to verify
+                  that you are the transaction sender)
+                </p>
               </div>
               <div style="margin-top:16px;" class="collapse-text">
-                2) After sending payment,review the status of your transaction
-                <router-link
-                  class="collapse-text-type1"
-                  :to="{
-                    path: '/order-result',
-                    query: {
-                      transaction_no: orderDetail.orderNo
-                    }
-                  }"
-                  >on this page</router-link
-                >
-                . Once the payment is confirmed several times in the block
-                chain, the payment will be completed and the merchant will be
-                notified. The confirmation process usually takes 10-45 minutes
-                but varies based on the coin's target block time and number of
-                block confirms required. The status page is available for the
-                next 30 days.
+                2) After you sign the payment, please wait patienly until the
+                transaction is fully confirmed. This process usually takes 10-45
+                minutes, pending on the actual blockchain traffic. Once the
+                payment is confirmed, a notification e-mail will be sent to your
+                mailbox, including the payment details.
               </div>
             </van-collapse-item>
             <van-collapse-item
-              title="What if l accidentally don't send enough?"
+              title="What if I didn’t send sufficient amount for the first time?"
               name="2"
             >
               <div class="collapse-text">
-                lf you don't send enough,that is OK. Just send the remainder and
-                we will combine them for you. You can also send from multiple
-                wallets/accounts.
+                If you didn’t send sufficient amount for the order, please go
+                ahead and send the remainder to the same payment address before
+                the payment expiration.
               </div>
             </van-collapse-item>
           </van-collapse>
@@ -212,6 +217,7 @@ export default {
   .common-title {
     padding: .px2rem(8) [] .px2rem(20) [];
     h4 {
+      // font-weight: 600;
       display: block;
       font-size: .px2rem(18) [];
       color: @color-title;
@@ -294,21 +300,51 @@ export default {
     padding: .px2rem(16) [];
     color: #596c90;
     font-size: .px2rem(14) [];
+    .ul-box {
+      color: #f23030;
+      li {
+        position: relative;
+        line-height: .px2rem(20) [];
+        padding-left: .px2rem(16) [];
+        &::after {
+          position: absolute;
+          content: "";
+          left: 0;
+          top: .px2rem(6) [];
+          width: .px2rem(8) [];
+          height: .px2rem(8) [];
+          border-radius: 50%;
+          background-color: #f23030;
+        }
+      }
+    }
     p {
       line-height: .px2rem(20) [];
     }
+    .order-code {
+      div {
+        word-break: break-all;
+        line-height: .px2rem(20) [];
+      }
+      .code-title {
+        display: inline-block;
+        line-height: .px2rem(20) [];
+        font-weight: 600;
+      }
+    }
   }
   .collapse-text-type1 {
-    color: #3e66fb;
+    color: @color-title-style2;
   }
 }
 ::v-deep .collapse {
   .van-collapse-item__title {
     background-color: #f5f7ff;
     color: #596c90;
-    font-size: .px2rem(14) [];
-    line-height: .px2rem(20) [];
+    font-size: .px2rem(18) [];
+    line-height: .px2rem(22) [];
     padding: .px2rem(14) [] .px2rem(20) [];
+    font-weight: 600;
   }
   .van-collapse-item__content {
     padding: .px2rem(16) [];
@@ -318,6 +354,10 @@ export default {
     font-size: .px2rem(14) [];
     line-height: .px2rem(20) [];
     word-break: break-word;
+    a {
+      color: #3e66fb;
+      text-decoration-line: underline;
+    }
   }
   .collapse-text-type1 {
     color: #3e66fb;

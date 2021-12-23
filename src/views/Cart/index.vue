@@ -5,7 +5,7 @@
       <div class="content">
         <div class="input-info-order">
           <div class="order-number">
-            <p class="option-item-title">All order</p>
+            <p class="option-item-title">{{ merchantName }}</p>
             <div class="option-item-text">
               <p class="order-number">order number:</p>
               <p class="option-item-title" style="text-decoration:underline">
@@ -326,7 +326,8 @@ export default {
   },
   computed: {
     ...mapState({
-      preOrder: state => state.orderOffer.preOrder
+      preOrder: state => state.orderOffer.preOrder,
+      merchantName: state => state.orderOffer.merchantName
     }),
     ...mapState(["refreshOffer"])
   },
