@@ -60,7 +60,7 @@
             <p>Make sure to use a regular send and not from a contract!</p>
             <p>
               Make sure to send enough to cover any coin transaction fees! Only
-              send this coin over the ETH network and
+              send this coin over the {{ orderDetail.networkName }} and
             </p>
             <p>make sure to use regular sends not via any kind of contract!</p>
             <div style="margin-top: 16px">

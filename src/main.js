@@ -19,6 +19,7 @@ import {
   Loading,
   Toast,
   Collapse,
+  CollapseItem,
   Divider,
   Dialog,
   NavBar,
@@ -52,6 +53,7 @@ Vue.component(Tag.name, Tag);
 Vue.component(Loading.name, Loading);
 Vue.component(Toast.name, Toast);
 Vue.component(Collapse.name, Collapse);
+Vue.component(CollapseItem.name, CollapseItem);
 Vue.component(Divider.name, Divider);
 Vue.component(Dialog.name, Dialog);
 Vue.component(NavBar.name, NavBar);
