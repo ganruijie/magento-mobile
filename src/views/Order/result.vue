@@ -66,6 +66,10 @@
             <div class="name">Address</div>
             <div class="value">{{ orderResult.poolAddress }}</div>
           </div>
+          <div v-if="[2, 3].includes(orderResult.status)" class="content-item">
+            <div class="name">Payment Process Expiration</div>
+            <div class="value">{{ dateFormate(`${orderResult.expireTime}`) }}</div>
+          </div>
           <div
             v-if="
               ![4, 6, 7].includes(orderResult.status) &&
@@ -260,6 +264,14 @@ export default {
         color: #596c90;
         font-size: .px2rem(14) [];
         line-height: .px2rem(20) [];
+      }
+    }
+    .verification-content {
+      .content-item {
+        display: inline-block !important;
+      }
+      .name,.value {
+        padding: 0 !important;
       }
     }
   }
