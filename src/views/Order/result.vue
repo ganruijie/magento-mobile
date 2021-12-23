@@ -97,10 +97,6 @@
             <div class="name">Address</div>
             <div class="value">{{ orderResult.poolAddress }}</div>
           </div>
-          <div v-if="[2, 3].includes(orderResult.status)" class="content-item">
-            <div class="name">Payment Process Expiration</div>
-            <div class="value">{{ dateFormate(`${orderResult.expireTime}`) }}</div>
-          </div>
           <div
             v-if="
               ![4, 6, 7].includes(orderResult.status) &&
@@ -108,14 +104,15 @@
             "
             class="content-item"
           >
-            <div style="color:#f23030;" class="name">Memo</div>
-            <div style="color:#f23030;" class="value">
+            <div class="name">Memo</div>
+            <div class="value">
               <p>{{ orderResult.poolAddressTag }}</p>
-              <p>
-                (Tips:Make sure you enter both the address and Memo correctly
-                before the transfer.)
-              </p>
+              <p style="color:#f23030;">(Must be included)</p>
             </div>
+          </div>
+          <div v-if="[2, 3].includes(orderResult.status)" class="content-item">
+            <div class="name">Payment Process Expiration</div>
+            <div class="value">{{ dateFormate(`${orderResult.expireTime}`) }}</div>
           </div>
           <div class="item-status">
             <div
@@ -186,8 +183,7 @@
                 <a
                   target="_blank"
                   href="https://safepalsupport.zendesk.com/hc/en-us/requests/new"
-                  >contact us
-                  https://safepalsupport.zendesk.com/hc/en-us/requests/new</a
+                  >contact us</a
                 >
                 with the information below for a refund of the amount paid:
               </p>
@@ -215,8 +211,7 @@
                 <a
                   target="_blank"
                   href="https://safepalsupport.zendesk.com/hc/en-us/requests/new"
-                  >contact us
-                  https://safepalsupport.zendesk.com/hc/en-us/requests/new</a
+                  >contact us</a
                 >
                 with the information below for a full refund:
               </p>
@@ -239,8 +234,7 @@
                 <a
                   target="_blank"
                   href="https://safepalsupport.zendesk.com/hc/en-us/requests/new"
-                  >contact us
-                  https://safepalsupport.zendesk.com/hc/en-us/requests/new</a
+                  >contact us</a
                 >
                 with the information below for a full refund:
               </p>
@@ -260,6 +254,17 @@
                 Once the payment is confirmed, a notification e-mail will be
                 sent to your mailbox, including the payment details. Please
                 check your spam box if you don’t see the email in the inbox.
+              </p>
+              <p style="display: inner-block;margin-bottom:0.26667rem;">
+                Please keep your account and verification code
+              </p>
+              <p>
+                lf you don't receive the email, contact us with the information
+                below and we will send you a refund: i) The transaction ID:
+                {{ orderResult.orderNo }} ii) A payment address to send the
+                funds to. iii) This verification code:
+                {{ orderResult.verificationCode }} (to verify that you are the
+                transaction sender.)
               </p>
             </div>
             <div class="common-content" v-else>
@@ -438,11 +443,13 @@ export default {
         color: #7c8db0;
         padding-right: .px2rem(10) [];
         min-width: 1.8rem;
+        text-align: left;
       }
       .value {
         color: #27273f;
         padding-left: .px2rem(10) [];
-        word-break: break-word;
+        word-break: break-all;
+        text-align: right;
       }
     }
     a {

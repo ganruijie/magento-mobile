@@ -8,7 +8,7 @@
               <canvas
                 width="180"
                 height="180"
-                style="width: 180px; height: 180px;"
+                style="width: 4.8rem; height: 4.8rem;"
               />
             </div>
           </div>
@@ -24,7 +24,15 @@
               <p class="content-item_title">Amount Remaining</p>
               <div class="item_fiatCurrency">
                 <div class="left">
-                  <p>{{ orderDetail.amount }} {{ orderDetail.symbol }}</p>
+                  <span style="text-decoration: underline;" class="text">{{ orderDetail.amount }} </span>
+                  <span style="padding-left:0.16rem" class="text">
+                    <img
+                    style="width: 0.64rem; height: 0.64rem;vertical-align: sub;"
+                    :src="`${appApi}${orderDetail.logoUrl}`"
+                    fit="fill"
+                  />
+                  </span>
+                  <span class="text">{{ orderDetail.symbol }}</span>
                 </div>
                 <div class="right"></div>
               </div>
@@ -105,8 +113,7 @@
                   <a
                     target="_blank"
                     href="https://safepalsupport.zendesk.com/hc/en-us/requests/new"
-                    >contact us
-                    https://safepalsupport.zendesk.com/hc/en-us/requests/new</a
+                    >contact us</a
                   >
                   with the information below for a full refund:
                 </p>
@@ -160,7 +167,8 @@ export default {
   },
   data() {
     return {
-      activeNames: [""]
+      appApi: process.env.VUE_APP_API,
+      activeNames: ["1", "2"]
     };
   },
   computed: {
@@ -254,11 +262,11 @@ export default {
     justify-content: space-between;
     align-items: center;
     .left {
-      p {
+      .text {
+        display: inline-block;
         color: #3e66fb;
         font-size: .px2rem(20) [];
         line-height: .px2rem(28) [];
-        text-decoration: underline;
         word-break: break-all;
       }
     }
