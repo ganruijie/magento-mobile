@@ -32,7 +32,6 @@ import {
 import App from "./App.vue";
 import router from "./router";
 import store from "./store/index";
-import "./registerServiceWorker";
 import { dispatchActiveSelector } from "@/modules/utils";
 import Tips from "@/plugins/tips/index.vue";
 import "./config/remconfig";

@@ -1,4 +1,4 @@
-# xianliao-shop-group-buy
+# magento-mobile
 
 ## Project setup
 ```

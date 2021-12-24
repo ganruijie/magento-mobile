@@ -9,18 +9,6 @@ const HTMLMinifierOptions = {
   removeScriptTypeAttributes: true
 };
 
-const externalStyle = [
-  {
-    module: "Alibaba Sans",
-    entry: {
-      path: "https://fonts.googleapis.com/css?family=Noto+Sans+SC&display=swap",
-      type: "css"
-    }
-  }
-];
-
-const externalsOptions = [...externalStyle];
-
 /*
 由于cps2只在ios 10和android 5.0以上才支持.
 所以通过增加nonce或hash来使用内联脚本的方法不起作用,
@@ -49,7 +37,6 @@ const CspHtmlWebpackPluginOptions = [
     "style-src": [
       "'self'",
       "'unsafe-inline'",
-      ...externalStyle.map(ele => new URL(ele.entry.path).host)
     ],
     "script-src": ["'self'", "'unsafe-inline'"]
   },
@@ -68,7 +55,6 @@ const CspHtmlWebpackPluginOptions = [
 ];
 
 module.exports = {
-  externalsOptions,
   HTMLMinifierOptions,
   CspHtmlWebpackPluginOptions
 };

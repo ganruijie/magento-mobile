@@ -29,7 +29,7 @@
             Please complete the payment
           </h3>
           <h3 v-else-if="orderResult.status === 3" class="title-text">
-            Please pay the remaining amount
+            Please pay the remainder
           </h3>
           <h3 v-else-if="orderResult.status === 4" class="title-text">
             The payment is completed
@@ -48,7 +48,14 @@
           <div class="content-item">
             <div class="name">Amount</div>
             <div class="value">
-              {{ orderResult.amount }} {{ orderResult.symbol }}
+              <img
+                style="width: 0.53333rem; height: 0.53333rem;vertical-align: middle;"
+                :src="`${appApi}${orderResult.logoUrl}`"
+                fit="fill"
+              />
+              <span style="vertical-align: middle;">
+                {{ orderResult.amount }} {{ orderResult.symbol }}
+              </span>
             </div>
           </div>
           <div
@@ -111,7 +118,7 @@
             </div>
           </div>
           <div v-if="[2, 3].includes(orderResult.status)" class="content-item">
-            <div class="name">Payment Process Expiration</div>
+            <div class="name">Payment Expiration</div>
             <div class="value">{{ dateFormate(`${orderResult.expireTime}`) }}</div>
           </div>
           <div class="item-status">
@@ -182,7 +189,7 @@
                 Please
                 <a
                   target="_blank"
-                  href="https://safepalsupport.zendesk.com/hc/en-us/requests/new"
+                  href="https://safepalsupport.zendesk.com/hc/en-us/requests/new?ticket_form_id=4413678258331"
                   >contact us</a
                 >
                 with the information below for a refund of the amount paid:
@@ -210,7 +217,7 @@
                 automatic email of payment failure. In such a case, please
                 <a
                   target="_blank"
-                  href="https://safepalsupport.zendesk.com/hc/en-us/requests/new"
+                  href="https://safepalsupport.zendesk.com/hc/en-us/requests/new?ticket_form_id=4413678258331"
                   >contact us</a
                 >
                 with the information below for a full refund:
@@ -233,7 +240,7 @@
                 automatic email of payment failure. In such a case, please
                 <a
                   target="_blank"
-                  href="https://safepalsupport.zendesk.com/hc/en-us/requests/new"
+                  href="https://safepalsupport.zendesk.com/hc/en-us/requests/new?ticket_form_id=4413678258331"
                   >contact us</a
                 >
                 with the information below for a full refund:
@@ -304,10 +311,11 @@ export default {
   name: "OrderResult",
   data() {
     return {
+      appApi: process.env.VUE_APP_API,
       payStatus: {
         1: "Waiting to bind the payment address",
         2: "Waiting for your funds",
-        3: "Waiting for the remaining payment",
+        3: "Waiting for the remainder",
         4: "Completed",
         5: "Refund",
         6: "Time out",
@@ -330,13 +338,13 @@ export default {
       this.$tips.showLoading();
       this.getOrderResult(param)
         .then(res => {
-          const { qrCodeUrl } = res;
-          this.$nextTick(() => {
-            const qr = new AraleQRCode({ text: qrCodeUrl, size: 180 });
-            const tar = this.$refs.qrCodeBox.querySelector(".qrcode-box-qr");
-            tar.innerHTML = "";
-            tar.appendChild(qr);
-          });
+          // const { qrCodeUrl } = res;
+          // this.$nextTick(() => {
+          //   const qr = new AraleQRCode({ text: qrCodeUrl, size: 180 });
+          //   const tar = this.$refs.qrCodeBox.querySelector(".qrcode-box-qr");
+          //   tar.innerHTML = "";
+          //   tar.appendChild(qr);
+          // });
         })
         .finally(() => {
           this.$tips.removeLoading();
@@ -387,7 +395,7 @@ export default {
       color: #3e66fb;
       line-height: .px2rem(30) [];
       font-size: .px2rem(20) [];
-      // font-weight: 600;
+      font-weight: 600;
       padding-left: .px2rem(20) [];
       &::after {
         position: absolute;
@@ -442,7 +450,7 @@ export default {
       .name {
         color: #7c8db0;
         padding-right: .px2rem(10) [];
-        min-width: 1.8rem;
+        min-width: 1.5rem;
         text-align: left;
       }
       .value {

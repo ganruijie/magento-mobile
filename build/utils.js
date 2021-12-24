@@ -1,8 +1,3 @@
-/**
- *  author : liuzhuo
- *  date : 2018/10/10 0010
- *  time : 11:26
- */
 const path = require("path");
 const glob = require("glob");
 

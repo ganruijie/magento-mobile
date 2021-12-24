@@ -1,21 +1,21 @@
 <template>
   <div class="cart-content">
     <div class="cart-item">
-      <h3 class="title">Your cart</h3>
+      <h3 class="title">Your Cart</h3>
       <div class="content">
         <div class="input-info-order">
           <div class="order-number">
             <p class="option-item-title">{{ merchantName }}</p>
             <div class="option-item-text">
-              <p class="order-number">order number:</p>
+              <p class="order-number">Order Number:</p>
               <p class="option-item-title" style="text-decoration:underline">
-                #{{ preOrder.outOrderNo }}
+                #{{ preOrder && preOrder.outOrderNo }}
               </p>
             </div>
           </div>
           <div class="order-amount">
-            <p class="option-item-title">{{ preOrder.amount }}</p>
-            <p class="option-item-text">{{ preOrder.currency }}</p>
+            <p class="option-item-title">{{ amount }}</p>
+            <p class="option-item-text">{{ preOrder && preOrder.currency }}</p>
           </div>
         </div>
       </div>
@@ -53,7 +53,7 @@
     <div class="cart-item">
       <div class="input-info-title-flex">
         <div class="title_left">
-          <h3 style="margin-bottom:0;" class="title">Coin & Network</h3>
+          <h3 style="margin-bottom:0;" class="title">Select Currency</h3>
         </div>
         <div class="title_right">({{ countDown }}s)</div>
       </div>
@@ -69,7 +69,7 @@
             @click="coinSelectOpen"
           >
             <div class="place-holder" v-if="!selectItem">
-              <p>Select a coin</p>
+              <p>Please Select Coin</p>
               <div class="">
                 <van-icon
                   name="arrow-up"
@@ -118,7 +118,7 @@
             @click="netWorkSelectOpen"
           >
             <div class="place-holder" v-if="!selectNetwork">
-              <p>Select a network</p>
+              <p>Please Select Network</p>
               <div class="">
                 <van-icon
                   name="arrow-up"
@@ -196,7 +196,7 @@
         <template #default>
           <div class="top-title">
             <span class="cancel" @click="coinSelectPopup = false">Cancel</span>
-            <span class="title">Select a coin</span>
+            <span class="title">Please Select Coin</span>
             <span class="ok" @click="onConfirmCoinSelect">Done</span>
           </div>
           <div
@@ -259,7 +259,7 @@
             <span class="cancel" @click="netWorkSelectPopup = false"
               >Cancel</span
             >
-            <span class="title">Select a network </span>
+            <span class="title">Please Select Network</span>
             <span class="ok" @click="onConfirmNetWorkSelect">Done</span>
           </div>
         </template>
@@ -329,7 +329,10 @@ export default {
       preOrder: state => state.orderOffer.preOrder,
       merchantName: state => state.orderOffer.merchantName
     }),
-    ...mapState(["refreshOffer"])
+    ...mapState(["refreshOffer"]),
+    amount() {
+      return this.$route.query.amount || '--'
+    }
   },
   watch: {
     selectAmountIsHasChange: {

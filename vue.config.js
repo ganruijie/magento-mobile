@@ -6,7 +6,6 @@ const path = require("path");
 const {
   HTMLMinifierOptions: minify,
   CspHtmlWebpackPluginOptions: cspOptions,
-  externalsOptions
 } = require("./build/config");
 const { isProd } = require("./build/utils");
 const CspHtmlWebpackPlugin = require("csp-html-webpack-plugin");
@@ -100,7 +99,7 @@ module.exports = {
             .loader(require("mini-css-extract-plugin").loader)
             .tap(options => ({
               ...options,
-              publicPath: IS_PROD || IS_DEV_PROD ? "/ext/magento/" : "/"
+              publicPath: IS_PROD || IS_DEV_PROD ? "/ext/magento/m" : "/"
             }));
         });
       });
@@ -213,14 +212,6 @@ module.exports = {
         as: "font"
       }
     ]);
-
-    config
-      .plugin("html-webpack-externals-plugin")
-      .use(HtmlWebpackExternalsPlugin, [
-        {
-          externals: externalsOptions
-        }
-      ]);
 
     isProd &&
       config

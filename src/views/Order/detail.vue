@@ -14,11 +14,11 @@
           </div>
           <div class="info"></div>
         </div>
+        <van-divider :hairline="false" />
         <div class="message">
           <div class="common-title">
             <h4>Message</h4>
           </div>
-          <van-divider :hairline="false" />
           <div class="content-message">
             <div class="content-item">
               <p class="content-item_title">Amount Remaining</p>
@@ -58,12 +58,12 @@
           </div>
         </div>
       </div>
+      <!-- <van-divider :hairline="false" /> -->
       <div class="verification-code">
         <div>
           <div class="common-title">
-            <h4 style="color:#f23030;font-weight:600;">[Important]</h4>
+            <h4 style="color:#f23030;font-weight:600;">Important</h4>
           </div>
-          <van-divider :hairline="false" />
           <div class="code-content">
             <p style="color:#f23030;">
               To make sure the payment goes through successfully, please:
@@ -112,7 +112,7 @@
                   payment failure. In such a case, please
                   <a
                     target="_blank"
-                    href="https://safepalsupport.zendesk.com/hc/en-us/requests/new"
+                    href="https://safepalsupport.zendesk.com/hc/en-us/requests/new?ticket_form_id=4413678258331"
                     >contact us</a
                   >
                   with the information below for a full refund:
@@ -191,13 +191,18 @@ export default {
       this.$tips.showLoading();
       this.getOrderDetail(param)
         .then(res => {
-          const { qrCodeUrl } = res;
+          const { qrCodeUrl, status } = res;
+          if (![2,3].includes(status)) {
+            this.timeOut();
+            return false;
+          }
           this.$nextTick(() => {
             const qr = new AraleQRCode({ text: qrCodeUrl, size: 180 });
             const tar = this.$refs.qrCodeBox.querySelector(".qrcode-box-qr");
             tar.innerHTML = "";
             tar.appendChild(qr);
           });
+          
         })
         .finally(() => {
           this.$tips.removeLoading();
@@ -206,7 +211,7 @@ export default {
     },
     timeOut() {
       this.$router.replace({
-        path: "/order-detail-result",
+        path: "/order-result",
         query: {
           transaction_no: this.orderDetail.orderNo
         }
@@ -225,7 +230,7 @@ export default {
   .common-title {
     padding: .px2rem(8) [] .px2rem(20) [];
     h4 {
-      // font-weight: 600;
+      font-weight: 600;
       display: block;
       font-size: .px2rem(18) [];
       color: @color-title;
